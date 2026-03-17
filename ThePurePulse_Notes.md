@@ -165,3 +165,6 @@ A living document tracking progress, decisions, and next steps for the Charity: 
 - work out how to add new music for each level
 - can I make the levels look more like water flowing and less like just squares
 - How can I engage the filter, sand, and other parts better
+- Add more charity:water recognition/logo to front page
+- Add images from charity:water completed missions
+- Can in incorporate a map that allows the player to pick their level and difficulty? (these should be from completed charity:water missions)
