@@ -14,14 +14,44 @@
 <body>
 
   <!-- TITLE SCREEN -->
-  <section id="title-screen" class="screen active">
-    <div class="title-container">
-      <h1 class="game-title">THE PURE PULSE</h1>
-      <button id="start-btn" class="primary-btn">Start Journey</button>
-      <button id="how-to-play-btn" class="secondary-btn">How to Play</button>
-      <p class="global-impact">Global Impact: 12,450,200 Liters Delivered</p>
+ <section id="title-screen" class="screen">
+  <div class="title-content">
+
+    <!-- Charity: Water Logo + Link -->
+    <a 
+      href="https://www.charitywater.org" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      class="cw-brand"
+    >
+      <img 
+        src="assets/images/jerrycan-yellow.png" 
+        alt="charity: water Jerry Can logo" 
+        class="cw-logo"
+      />
+      <span class="cw-link-text">charitywater.org</span>
+    </a>
+
+    <!-- Main Title -->
+    <h1 class="title-heading">Pure Pulse</h1>
+    <p class="title-subheading">
+      A rhythm journey inspired by real communities.
+    </p>
+
+    <!-- Microcopy -->
+    <p class="title-microcopy">
+      Created in support of clean water access around the world.
+    </p>
+
+    <!-- Buttons -->
+    <div class="title-buttons">
+      <button id="start-btn" class="btn-primary">Start</button>
+      <button id="how-to-play-btn" class="btn-secondary">How to Play</button>
     </div>
-  </section>
+
+  </div>
+</section>
+
 
   <!-- GAME SCREEN -->
   <section id="game-screen" class="screen hidden">
