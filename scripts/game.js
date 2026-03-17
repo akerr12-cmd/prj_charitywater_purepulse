@@ -1,3 +1,4 @@
+
 /* ---------------------------------------------------------
    PURE PULSE — GAME CONTROLLER
    Handles:
@@ -25,6 +26,10 @@ const sustainValue = document.getElementById("sustain-value");
 
 const litersValue = document.getElementById("liters-value");
 const hoursValue = document.getElementById("hours-value");
+
+const backToMenuBtn = document.getElementById("back-to-menu-btn");
+const backToMenuBtnImpact = document.getElementById("back-to-menu-btn-impact");
+
 
 /* ---------------------------------------------------------
    GAME STATE
@@ -181,12 +186,32 @@ export function increasePurity(amount) {
 }
 
 /* ---------------------------------------------------------
+   BACK TO MAIN MENU
+--------------------------------------------------------- */
+
+function returnToMainMenu() {
+  // Stop game state
+  levelComplete = false;
+  isPaused = false;
+
+  // Stop audio + beat engine
+  window.dispatchEvent(new Event("pause-beat"));
+  window.dispatchEvent(new Event("reset-beat"));
+
+  // Switch screens
+  showScreen(titleScreen);
+}
+
+
+/* ---------------------------------------------------------
    EVENT LISTENERS
 --------------------------------------------------------- */
 startBtn.addEventListener("click", startGame);
 playAgainBtn.addEventListener("click", startGame);
 pauseBtn.addEventListener("click", pauseGame);
 resetBtn.addEventListener("click", resetLevel);
+backToMenuBtn.addEventListener("click", returnToMainMenu);
+backToMenuBtnImpact.addEventListener("click", returnToMainMenu);
 
 
 /* ---------------------------------------------------------
