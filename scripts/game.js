@@ -1,29 +1,15 @@
 import { startTutorial } from "./tutorial.js";
-
-/* ---------------------------------------------------------
-   PURE PULSE — GAME CONTROLLER
-   Handles:
-   - Screen switching
-   - Purity + sustainability tracking
-   - Connecting audio.js → grid.js
-   - Win state → Impact Report
---------------------------------------------------------- */
-
 import { startBeat } from "./audio.js";
 import { renderGrid, moveWaterForward, resetWater, levelOne } from "./grid.js";
 
-/* ---------------------------------------------------------
-   DOM ELEMENTS
---------------------------------------------------------- */
+/* DOM ELEMENTS */
 const titleScreen = document.getElementById("title-screen");
 const gameScreen = document.getElementById("game-screen");
 const impactScreen = document.getElementById("impact-screen");
 
 const startBtn = document.getElementById("start-btn");
 const playAgainBtn = document.getElementById("play-again-btn");
-
 const howToPlayBtn = document.getElementById("how-to-play-btn");
-
 
 const purityValue = document.getElementById("purity-value");
 const sustainValue = document.getElementById("sustain-value");
@@ -33,35 +19,24 @@ const hoursValue = document.getElementById("hours-value");
 
 const backToMenuBtn = document.getElementById("back-to-menu-btn");
 const backToMenuBtnImpact = document.getElementById("back-to-menu-btn-impact");
+const replayTutorialBtn = document.getElementById("replay-tutorial-btn");
 
-
-/* ---------------------------------------------------------
-   GAME STATE
---------------------------------------------------------- */
-let purity = 0;          // 0–100%
-let sustainability = 100; // placeholder for now
-let taps = 0;            // total successful taps
+/* GAME STATE */
+let purity = 0;
+let sustainability = 100;
+let taps = 0;
 let levelComplete = false;
 
-/* ---------------------------------------------------------
-   SCREEN SWITCHING
---------------------------------------------------------- */
+/* SCREEN SWITCHING */
 function showScreen(screen) {
   titleScreen.classList.add("hidden");
   gameScreen.classList.add("hidden");
   impactScreen.classList.add("hidden");
 
-  titleScreen.classList.remove("active");
-  gameScreen.classList.remove("active");
-  impactScreen.classList.remove("active");
-
   screen.classList.remove("hidden");
-  screen.classList.add("active");
 }
 
-/* ---------------------------------------------------------
-   START GAME
---------------------------------------------------------- */
+/* START GAME */
 function startGame() {
   purity = 0;
   sustainability = 100;
@@ -78,47 +53,33 @@ function startGame() {
   startBeat();
 }
 
-/* ---------------------------------------------------------
-   HANDLE SUCCESSFUL BEAT (called from audio.js)
---------------------------------------------------------- */
+/* BEAT SUCCESS */
 export function onBeatSuccessGame() {
   if (levelComplete) return;
 
   taps += 1;
-
-  // Baseline purity gain per beat
   increasePurity(5);
-
   moveWaterForward();
   checkForWin();
 }
 
-/* ---------------------------------------------------------
-   HANDLE MISSED BEAT
---------------------------------------------------------- */
+/* BEAT MISS */
 export function onBeatMissGame() {
   sustainability = Math.max(0, sustainability - 1);
   sustainValue.textContent = sustainability + "%";
 }
 
-/* ---------------------------------------------------------
-   CHECK WIN CONDITION
---------------------------------------------------------- */
+/* WIN CHECK */
 function checkForWin() {
-  // If purity is high enough and water reached the end
   if (purity >= 50 && waterReachedVillage()) {
     levelComplete = true;
     setTimeout(showImpactReport, 800);
   }
 }
 
-/* ---------------------------------------------------------
-   CHECK IF WATER IS AT THE VILLAGE
---------------------------------------------------------- */
 function waterReachedVillage() {
   const end = levelOne.endPos;
   const waterTile = document.querySelector(".water");
-
   if (!waterTile) return false;
 
   const tiles = Array.from(document.querySelectorAll("#grid-container .tile"));
@@ -130,12 +91,9 @@ function waterReachedVillage() {
   return row === end.row && col === end.col;
 }
 
-/* ---------------------------------------------------------
-   IMPACT REPORT
---------------------------------------------------------- */
+/* IMPACT REPORT */
 function showImpactReport() {
-  // Convert taps → liters + hours
-  const liters = taps * 10; // placeholder formula
+  const liters = taps * 10;
   const hours = Math.floor(taps / 4);
 
   litersValue.textContent = liters;
@@ -144,10 +102,7 @@ function showImpactReport() {
   showScreen(impactScreen);
 }
 
-/* ---------------------------------------------------------
-   PAUSE + RESET BUTTONS
---------------------------------------------------------- */
-
+/* PAUSE + RESET */
 const pauseBtn = document.getElementById("pause-btn");
 const resetBtn = document.getElementById("reset-btn");
 
@@ -158,10 +113,10 @@ function pauseGame() {
 
   if (isPaused) {
     pauseBtn.textContent = "Resume";
-    window.dispatchEvent(new Event("pause-beat")); // tells audio.js to pause
+    window.dispatchEvent(new Event("pause-beat"));
   } else {
     pauseBtn.textContent = "Pause";
-    window.dispatchEvent(new Event("resume-beat")); // tells audio.js to resume
+    window.dispatchEvent(new Event("resume-beat"));
   }
 }
 
@@ -177,60 +132,37 @@ function resetLevel() {
   resetWater();
   renderGrid();
 
-  // Restart beat engine
   window.dispatchEvent(new Event("reset-beat"));
 }
 
-/* ---------------------------------------------------------
-   PURITY SYSTEM - clean place to manage purity changes (expandable for future animations, sound effects, etc.)
---------------------------------------------------------- */
+/* PURITY */
 export function increasePurity(amount) {
   purity = Math.min(100, purity + amount);
   purityValue.textContent = purity + "%";
 }
 
-/* ---------------------------------------------------------
-   BACK TO MAIN MENU
---------------------------------------------------------- */
-
+/* MAIN MENU */
 export function returnToMainMenu() {
-  // Stop game state
   levelComplete = false;
   isPaused = false;
 
-  // Stop audio + beat engine
   window.dispatchEvent(new Event("pause-beat"));
   window.dispatchEvent(new Event("reset-beat"));
 
-  // Switch screens
   showScreen(titleScreen);
 }
 
-//-----------------------------
-// Replay Tutorial   
-//-----------------------------
-const replayTutorialBtn = document.getElementById("replay-tutorial-btn");
-
-replayTutorialBtn.addEventListener("click", () => {
-  startTutorial();
-});
-
-
-/* ---------------------------------------------------------
-   EVENT LISTENERS
---------------------------------------------------------- */
+/* EVENT LISTENERS */
 startBtn.addEventListener("click", startGame);
 playAgainBtn.addEventListener("click", startGame);
 pauseBtn.addEventListener("click", pauseGame);
 resetBtn.addEventListener("click", resetLevel);
+
 backToMenuBtn.addEventListener("click", returnToMainMenu);
 backToMenuBtnImpact.addEventListener("click", returnToMainMenu);
-howToPlayBtn.addEventListener("click", () => {
-  startTutorial();
-});
 
+howToPlayBtn.addEventListener("click", startTutorial);
+replayTutorialBtn.addEventListener("click", startTutorial);
 
-/* ---------------------------------------------------------
-   INITIAL LOAD
---------------------------------------------------------- */
+/* INITIAL LOAD */
 showScreen(titleScreen);
