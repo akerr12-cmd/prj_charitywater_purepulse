@@ -193,7 +193,7 @@ export function increasePurity(amount) {
    BACK TO MAIN MENU
 --------------------------------------------------------- */
 
-function returnToMainMenu() {
+export function returnToMainMenu() {
   // Stop game state
   levelComplete = false;
   isPaused = false;
@@ -205,6 +205,15 @@ function returnToMainMenu() {
   // Switch screens
   showScreen(titleScreen);
 }
+
+//-----------------------------
+// Replay Tutorial   
+//-----------------------------
+const replayTutorialBtn = document.getElementById("replay-tutorial-btn");
+
+replayTutorialBtn.addEventListener("click", () => {
+  startTutorial();
+});
 
 
 /* ---------------------------------------------------------

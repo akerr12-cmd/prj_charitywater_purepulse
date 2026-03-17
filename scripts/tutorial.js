@@ -1,4 +1,5 @@
 import { showScreen } from "./screenManager.js"; // however you switch screens
+import { returnToMainMenu } from "./game.js";
 
 const tutorialScreen = document.getElementById("tutorial-screen");
 const tutorialText = document.getElementById("tutorial-text");
@@ -127,3 +128,20 @@ export function startTutorial() {
   showScreen(tutorialScreen);
   loadTutorialStep();
 }
+
+//-----------------------------
+// Skip tutorial and return to main menu
+//-----------------------------
+const skipBtn = document.getElementById("tutorial-skip-btn");
+
+skipBtn.addEventListener("click", () => {
+  returnToMainMenu();
+});
+
+
+//-----------------------------
+// Event Listener
+//-----------------------------
+exitBtn.addEventListener("click", () => {
+  returnToMainMenu();
+});
