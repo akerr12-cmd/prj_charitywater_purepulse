@@ -271,3 +271,44 @@ body {
   0% { transform: scale(0.98); }
   100% { transform: scale(1); }
 }
+
+/* ----------------------
+   WATER SURGE ANIMATION
+-------------------------*/
+
+.water {
+  position: relative;
+  outline: 3px solid #ffffff;
+  outline-offset: -3px;
+  animation: waterPulse 0.25s ease-out;
+}
+
+@keyframes waterPulse {
+  0% {
+    transform: scale(0.7);
+    box-shadow: 0 0 0px rgba(46, 151, 209, 0.0);
+  }
+  60% {
+    transform: scale(1.1);
+    box-shadow: 0 0 12px rgba(46, 151, 209, 0.6);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 4px rgba(46, 151, 209, 0.4);
+  }
+}
+
+/* Water Trail Glow (makes the previous tile briefly glow as the water moves) */
+.water-trail {
+  animation: waterTrail 0.4s ease-out;
+}
+
+@keyframes waterTrail {
+  0% {
+    background: rgba(46, 151, 209, 0.25);
+  }
+  100% {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+

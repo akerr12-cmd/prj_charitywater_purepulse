@@ -76,23 +76,35 @@ export function renderGrid() {
 export function moveWaterForward() {
   const { row, col } = waterPos;
 
-  // If at end, stop
+  // If already at the end, stop movement
   if (col === currentLevel.endPos.col && row === currentLevel.endPos.row) {
     console.log("Reached village!");
-    // Hook for win state:
-    // triggerImpactScreen();
     return;
   }
 
-  // Move right along the path
+  // Store previous position for trail animation
+  const prevCol = waterPos.col;
+
+  // Move water one tile to the right (Level 1 path)
   waterPos.col += 1;
 
-  // Hook for purity logic:
+  // Apply trail animation to the previous tile
+  const tiles = document.querySelectorAll("#grid-container .tile");
+  const prevTileIndex = row * 6 + prevCol;
+  const prevTile = tiles[prevTileIndex];
+
+  if (prevTile) {
+    prevTile.classList.add("water-trail");
+    setTimeout(() => prevTile.classList.remove("water-trail"), 400);
+  }
+
+  // Hook for purity logic (keep this!)
   const tileType = currentLevel.grid[waterPos.row][waterPos.col];
   if (tileType === TILE.BIOSAND) {
     // increasePurity(10);
   }
 
+  // Re-render grid with updated water position
   renderGrid();
 }
 
