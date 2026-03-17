@@ -21,6 +21,9 @@ const impactScreen = document.getElementById("impact-screen");
 const startBtn = document.getElementById("start-btn");
 const playAgainBtn = document.getElementById("play-again-btn");
 
+const howToPlayBtn = document.getElementById("how-to-play-btn");
+
+
 const purityValue = document.getElementById("purity-value");
 const sustainValue = document.getElementById("sustain-value");
 

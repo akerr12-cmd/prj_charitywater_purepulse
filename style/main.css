@@ -312,3 +312,25 @@ body {
   }
 }
 
+/* TUTORIAL SCREEN */
+#tutorial-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+#tutorial-text {
+  font-size: 1.4rem;
+  max-width: 500px;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+#tutorial-tap-btn.hidden,
+#tutorial-next-btn.hidden {
+  display: none;
+}
+
