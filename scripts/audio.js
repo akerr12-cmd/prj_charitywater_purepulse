@@ -31,11 +31,13 @@ drumLoop.volume = 0.9;
 // Pause beat scheduling
 window.addEventListener("pause-beat", () => {
   isPaused = true;
+  drumLoop.pause();
 });
 
 // Resume beat scheduling
 window.addEventListener("resume-beat", () => {
   isPaused = false;
+  drumLoop.play(); 
   nextBeatTime = audioCtx.currentTime + 0.1;
   scheduler();
 });
@@ -43,6 +45,7 @@ window.addEventListener("resume-beat", () => {
 // Reset beat engine
 window.addEventListener("reset-beat", () => {
   isPaused = false;
+  drumLoop.currentTime = 0;
   nextBeatTime = audioCtx.currentTime + 0.1;
 });
 
