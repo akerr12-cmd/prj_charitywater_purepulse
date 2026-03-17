@@ -1,6 +1,8 @@
 import { startTutorial } from "./tutorial.js";
-import { startBeat } from "./audio.js";
+import { startBeat, handleTap as checkTapTiming } from "./audio.js";
 import { renderGrid, moveWaterForward, resetWater, levelOne } from "./grid.js";
+
+console.log("game.js loaded");
 
 /* DOM ELEMENTS */
 const titleScreen = document.getElementById("title-screen");
@@ -12,6 +14,7 @@ const startBtn = document.getElementById("start-btn");
 const impactContinueBtn = document.getElementById("impact-continue-btn");
 const playAgainBtn = document.getElementById("play-again-btn");
 const howToPlayBtn = document.getElementById("how-to-play-btn");
+const pulseBtn = document.getElementById("pulse-btn");
 
 const purityValue = document.getElementById("purity-value");
 const sustainValue = document.getElementById("sustain-value");
@@ -182,6 +185,16 @@ if (impactContinueBtn) {
 if (pauseBtn) pauseBtn.addEventListener("click", pauseGame);
 if (resetBtn) resetBtn.addEventListener("click", resetLevel);
 
+// Pulse button: start beat and check tap timing
+if (pulseBtn) {
+  pulseBtn.addEventListener("click", () => {
+    startBeat();
+    if (!levelComplete) {
+      checkTapTiming();
+    }
+  });
+}
+
 if (backToMenuBtn) backToMenuBtn.addEventListener("click", returnToMainMenu);
 if (backToMenuBtnImpact) {
   backToMenuBtnImpact.addEventListener("click", returnToMainMenu);
@@ -202,4 +215,7 @@ if (replayTutorialBtn) {
 /* INITIAL LOAD */
 window.showScreen = showScreen;
 window.hideScreen = hideScreen;
+console.log("titleScreen element:", titleScreen);
+console.log("About to show title screen");
 showScreen(titleScreen);
+console.log("Title screen shown");

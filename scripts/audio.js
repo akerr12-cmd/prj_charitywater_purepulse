@@ -15,10 +15,18 @@ let beatInterval = 60 / bpm; // seconds per beat
 let nextBeatTime = 0;
 let isRunning = false;
 
-const tolerance = 0.15; // 150ms timing window
+let mediaSourceNode;
+let analyser;
+let freqData;
+let lowEnergyAvg = 0;
+let lastPeakTime = 0;
+let lastStrongBeatTime = 0;
+let strongBeatInterval = beatInterval;
+const strongBeatHistory = [];
+
+const tolerance = 0.08; // 80ms timing window
 
 // DOM elements
-const pulseBtn = document.getElementById("pulse-btn");
 const tapFeedback = document.getElementById("tap-feedback");
 const drumLoop = new Audio("assets/audio/lvl-1-drum-afrobeat.mp3");
 drumLoop.loop = true;
@@ -37,6 +45,7 @@ window.addEventListener("pause-beat", () => {
 // Resume beat scheduling
 window.addEventListener("resume-beat", () => {
   isPaused = false;
+  audioCtx?.resume();
   drumLoop.play(); 
   nextBeatTime = audioCtx.currentTime + 0.1;
   scheduler();
@@ -46,6 +55,11 @@ window.addEventListener("resume-beat", () => {
 window.addEventListener("reset-beat", () => {
   isPaused = false;
   drumLoop.currentTime = 0;
+  lowEnergyAvg = 0;
+  lastPeakTime = 0;
+  lastStrongBeatTime = 0;
+  strongBeatInterval = beatInterval;
+  strongBeatHistory.length = 0;
   nextBeatTime = audioCtx.currentTime + 0.1;
 });
 
@@ -55,6 +69,12 @@ window.addEventListener("stop-beat", () => {
   isRunning = false;
   drumLoop.pause();
   drumLoop.currentTime = 0;
+
+  lowEnergyAvg = 0;
+  lastPeakTime = 0;
+  lastStrongBeatTime = 0;
+  strongBeatInterval = beatInterval;
+  strongBeatHistory.length = 0;
 
   if (audioCtx) {
     nextBeatTime = audioCtx.currentTime + 0.1;
@@ -67,6 +87,77 @@ function initAudio() {
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
+
+  if (!mediaSourceNode) {
+    mediaSourceNode = audioCtx.createMediaElementSource(drumLoop);
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 2048;
+    freqData = new Uint8Array(analyser.frequencyBinCount);
+
+    mediaSourceNode.connect(analyser);
+    analyser.connect(audioCtx.destination);
+  }
+}
+
+function detectStrongBeat(currentTime) {
+  if (!analyser || !freqData) return;
+
+  analyser.getByteFrequencyData(freqData);
+
+  // Calculate bass energy from low frequencies
+  const bassBins = 16;
+  let bassEnergy = 0;
+  for (let i = 0; i < bassBins; i += 1) {
+    bassEnergy += freqData[i];
+  }
+  bassEnergy /= bassBins;
+
+  // Smooth rolling average of bass energy
+  if (lowEnergyAvg === 0) {
+    lowEnergyAvg = bassEnergy;
+  } else {
+    lowEnergyAvg = lowEnergyAvg * 0.94 + bassEnergy * 0.06;
+  }
+
+  // Detect peaks
+  const minPeakGap = 0.4; // 400ms minimum gap between beats
+  const threshold = lowEnergyAvg * 1.3 + 5; // More lenient threshold
+
+  if (bassEnergy > threshold && currentTime - lastPeakTime > minPeakGap) {
+    lastPeakTime = currentTime;
+    lastStrongBeatTime = currentTime;
+
+    strongBeatHistory.push(currentTime);
+    if (strongBeatHistory.length > 12) {
+      strongBeatHistory.shift();
+    }
+
+    // Calculate average beat interval from recent peaks
+    if (strongBeatHistory.length >= 2) {
+      const intervals = [];
+      for (let i = 1; i < strongBeatHistory.length; i += 1) {
+        const interval = strongBeatHistory[i] - strongBeatHistory[i - 1];
+        // Accept intervals that look like valid beats (0.3s to 0.9s)
+        if (interval >= 0.3 && interval <= 0.9) {
+          intervals.push(interval);
+        }
+      }
+
+      if (intervals.length > 0) {
+        const avgInterval = intervals.reduce((sum, val) => sum + val, 0) / intervals.length;
+        // Smoothly adapt the beat interval
+        strongBeatInterval = strongBeatInterval * 0.75 + avgInterval * 0.25;
+      }
+    }
+  }
+}
+
+function getNearestStrongBeatTime(now) {
+  if (!lastStrongBeatTime) return null;
+
+  const interval = strongBeatInterval || beatInterval;
+  const cyclesFromLast = Math.round((now - lastStrongBeatTime) / interval);
+  return lastStrongBeatTime + cyclesFromLast * interval;
 }
 
 // ---------------------------------------------------------
@@ -93,6 +184,8 @@ function scheduler() {
 
   const currentTime = audioCtx.currentTime;
 
+  detectStrongBeat(currentTime);
+
   while (nextBeatTime < currentTime + 0.1) {
    // playClick(nextBeatTime);
     nextBeatTime += beatInterval;
@@ -106,11 +199,21 @@ function scheduler() {
 // ---------------------------------------------------------
 export function startBeat() {
   initAudio();
+  
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
 
   if (!isRunning) {
     isRunning = true;
 
     drumLoop.currentTime = 0;
+    lowEnergyAvg = 0;
+    lastPeakTime = 0;
+    lastStrongBeatTime = 0;
+    strongBeatInterval = beatInterval;
+    strongBeatHistory.length = 0;
+    
     drumLoop.play();
 
     nextBeatTime = audioCtx.currentTime + 0.1;
@@ -127,11 +230,21 @@ export function handleTap() {
 
   const now = audioCtx.currentTime;
 
-  // Find the nearest beat
-  const beatsFromStart = nextBeatTime / beatInterval;
-  const nearestBeat = Math.round(beatsFromStart) * beatInterval;
+  const nearestStrongBeat = getNearestStrongBeatTime(now);
 
-  const diff = Math.abs(now - nearestBeat);
+  let diff;
+  let beatSource;
+  if (nearestStrongBeat !== null) {
+    diff = Math.abs(now - nearestStrongBeat);
+    beatSource = "strong";
+  } else {
+    // Fallback: calculate nearest beat aligned to zero based on current time
+    const nearestBeat = Math.round(now / beatInterval) * beatInterval;
+    diff = Math.abs(now - nearestBeat);
+    beatSource = "fallback";
+  }
+
+  console.log(`Tap: diff=${diff.toFixed(4)}s (${beatSource}), tolerance=${tolerance.toFixed(4)}s, result=${diff <= tolerance ? "ON BEAT" : "OFF BEAT"}`);
 
   if (diff <= tolerance) {
     onBeatSuccess();
@@ -167,7 +280,4 @@ function onBeatMiss() {
 // ---------------------------------------------------------
 // Attach tap listener
 // ---------------------------------------------------------
-pulseBtn.addEventListener("click", () => {
-  startBeat();   // ensures audio starts on first tap
-  handleTap();
-});
+// (Moved to game.js to allow level complete check before tap)
