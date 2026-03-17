@@ -101,6 +101,7 @@ function showImpactReport() {
   litersValue.textContent = liters;
   hoursValue.textContent = hours;
 
+  window.dispatchEvent(new Event("stop-beat"));
   showScreen(impactScreen);
 }
 

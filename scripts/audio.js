@@ -49,6 +49,18 @@ window.addEventListener("reset-beat", () => {
   nextBeatTime = audioCtx.currentTime + 0.1;
 });
 
+// Fully stop and reset beat engine
+window.addEventListener("stop-beat", () => {
+  isPaused = false;
+  isRunning = false;
+  drumLoop.pause();
+  drumLoop.currentTime = 0;
+
+  if (audioCtx) {
+    nextBeatTime = audioCtx.currentTime + 0.1;
+  }
+});
+
 // Initialize Audio Context
 // ---------------------------------------------------------
 function initAudio() {
