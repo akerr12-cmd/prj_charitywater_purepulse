@@ -1,0 +1,205 @@
+/* ------------------------------
+   GLOBAL RESET + BASE STYLES
+------------------------------ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-light);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.screen {
+  width: 100%;
+  height: 100%;
+  display: none;
+  padding: 2rem;
+}
+
+.screen.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hidden {
+  display: none;
+}
+
+
+  /* Charity: Water Brand Colors */
+ :root {
+      --cw-yellow: #FBD400;
+      --cw-blue: #2E97D1;
+      --cw-dark: #002E5D;
+      --bg-dark: #001b2e;
+      --text-light: #ffffff;
+    }
+
+/* ------------------------------
+   TITLE SCREEN
+------------------------------ */
+
+.title-container {
+  text-align: center;
+}
+
+.game-title {
+  font-size: 2.8rem;
+  letter-spacing: 2px;
+  margin-bottom: 2rem;
+  color: var(--cw-yellow);
+}
+
+.global-impact {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* ------------------------------
+   BUTTONS
+------------------------------ */
+
+.primary-btn,
+.secondary-btn {
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+  transition: 0.2s ease;
+}
+
+.primary-btn {
+  background: var(--cw-yellow);
+  color: #000;
+  font-weight: 600;
+}
+
+.primary-btn:hover {
+  background: #ffdf3f;
+}
+
+.secondary-btn {
+  background: transparent;
+  border: 2px solid var(--cw-yellow);
+  color: var(--cw-yellow);
+}
+
+.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ------------------------------
+   GAME SCREEN
+------------------------------ */
+
+.top-bar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+#grid-container {
+  width: 90vw;
+  max-width: 420px;
+  height: 90vw;
+  max-height: 420px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: 4px;
+  margin: 0 auto 2rem auto;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 6px;
+  border-radius: 12px;
+}
+
+/* Placeholder tile styling */
+.tile {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+}
+
+/* ------------------------------
+   RHYTHM ZONE
+------------------------------ */
+
+.rhythm-zone {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.pulse-btn {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: var(--cw-yellow);
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.pulse-btn:active {
+  transform: scale(0.95);
+}
+
+.tap-feedback {
+  margin-top: 1rem;
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+/* ------------------------------
+   INVENTORY
+------------------------------ */
+
+.inventory {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.inv-item {
+  padding: 0.6rem 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+/* ------------------------------
+   IMPACT SCREEN
+------------------------------ */
+
+.impact-container {
+  text-align: center;
+  width: 90%;
+  max-width: 420px;
+}
+
+.impact-photo {
+  width: 100%;
+  height: 180px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  margin: 1.5rem 0;
+}
+
+.impact-stats p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}

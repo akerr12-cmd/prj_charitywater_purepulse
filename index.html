@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Pure Pulse</title>
+
+
+  <link rel="stylesheet" href="style/main.css" />
+</head>
+
+<body>
+
+  <!-- TITLE SCREEN -->
+  <section id="title-screen" class="screen active">
+    <div class="title-container">
+      <h1 class="game-title">THE PURE PULSE</h1>
+      <button id="start-btn" class="primary-btn">Start Journey</button>
+      <button id="how-btn" class="secondary-btn">How to Play</button>
+      <p class="global-impact">Global Impact: 12,450,200 Liters Delivered</p>
+    </div>
+  </section>
+
+  <!-- GAME SCREEN -->
+  <section id="game-screen" class="screen hidden">
+    <header class="top-bar">
+      <div class="purity">Purity: <span id="purity-value">0%</span></div>
+      <div class="level-name">Level 1: Malawi</div>
+      <div class="sustainability">Sustain: <span id="sustain-value">100%</span></div>
+    </header>
+
+    <div id="grid-container"></div>
+
+    <div class="rhythm-zone">
+      <button id="pulse-btn" class="pulse-btn">TAP THE PULSE</button>
+      <p id="tap-feedback" class="tap-feedback"></p>
+    </div>
+
+    <div class="inventory">
+      <div class="inv-item">BioSand</div>
+      <div class="inv-item">Charcoal</div>
+      <div class="inv-item">Sensor</div>
+    </div>
+  </section>
+
+  <!-- IMPACT REPORT -->
+  <section id="impact-screen" class="screen hidden">
+    <div class="impact-container">
+      <h2>Project Completed</h2>
+
+      <div class="impact-photo"></div>
+
+      <div class="impact-stats">
+        <p>Liters Filtered: <span id="liters-value">0</span>L</p>
+        <p>Hours Saved: <span id="hours-value">0</span></p>
+        <p>Monitoring: <span id="monitor-value">100%</span></p>
+      </div>
+
+      <button id="share-btn" class="primary-btn">Share Your Impact</button>
+      <button id="play-again-btn" class="secondary-btn">Keep the Pulse Going</button>
+    </div>
+  </section>
+
+  <!-- Scripts -->
+  <script src="scripts/audio.js"></script>
+  <script src="scripts/grid.js"></script>
+  <script src="scripts/game.js"></script>
+
+</body>
+</html>
