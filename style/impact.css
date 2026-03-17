@@ -1,0 +1,95 @@
+.impact-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url("assets/images/clean_water_pouring.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.9);
+  z-index: 1;
+}
+
+/* Fullscreen background */
+#impact-reveal {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  color: #ffffff;
+}
+
+.impact-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url("assets/images/impact-hands-water.jpg"); /* <-- your uploaded image */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.9);
+  z-index: 1;
+}
+
+/* Content column */
+.impact-content {
+  position: relative;
+  z-index: 2;
+  max-width: 480px;
+  padding: 4rem 3rem;
+  text-align: left;
+}
+
+.impact-content h1 {
+  font-size: 2.4rem;
+  margin: 0 0 1rem;
+  line-height: 1.2;
+}
+
+.impact-sub {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #e8e8e8;
+}
+
+.impact-metric {
+  font-size: 1.1rem;
+  color: #d0d0d0;
+  margin-bottom: 2rem;
+}
+
+.impact-microcopy {
+  font-size: 0.95rem;
+  color: #cccccc;
+  margin-bottom: 2.5rem;
+  max-width: 420px;
+  line-height: 1.5;
+}
+
+/* Continue button */
+#impact-continue-btn {
+  background: #FFC907;
+  color: #1A1A1A;
+  padding: 0.9rem 2.2rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+#impact-continue-btn:hover {
+  transform: translateY(-3px);
+}
+
+/* Jerry Can logo */
+.impact-logo {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  height: 48px;
+  width: auto;
+  z-index: 3;
+  background: #000000;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+}
