@@ -1,3 +1,4 @@
+import { startTutorial } from "./tutorial.js";
 
 /* ---------------------------------------------------------
    PURE PULSE — GAME CONTROLLER
@@ -215,6 +216,9 @@ pauseBtn.addEventListener("click", pauseGame);
 resetBtn.addEventListener("click", resetLevel);
 backToMenuBtn.addEventListener("click", returnToMainMenu);
 backToMenuBtnImpact.addEventListener("click", returnToMainMenu);
+howToPlayBtn.addEventListener("click", () => {
+  startTutorial();
+});
 
 
 /* ---------------------------------------------------------
