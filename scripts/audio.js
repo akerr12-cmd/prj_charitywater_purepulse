@@ -20,6 +20,10 @@ const tolerance = 0.15; // 150ms timing window
 // DOM elements
 const pulseBtn = document.getElementById("pulse-btn");
 const tapFeedback = document.getElementById("tap-feedback");
+const drumLoop = new Audio("assets/audio/afro-beat-percussion-loop-120-bpm.wav");
+drumLoop.loop = true;
+drumLoop.volume = 0.9;
+
 
 // ---------------------------------------------------------
 // PAUSE / RESUME
