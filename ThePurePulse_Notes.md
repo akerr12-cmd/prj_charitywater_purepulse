@@ -158,3 +158,10 @@ A living document tracking progress, decisions, and next steps for the Charity: 
 - Prioritize the “feel” of tapping — this is the soul of the game.
 - Don’t overbuild Level 1; MVP first, polish later.
 - Remember: this is for students. It should feel cool, modern, and calming.
+
+## TO DO 03-17-26
+- Update pause button - new music is not pausing
+- add return to main menu button
+- work out how to add new music for each level
+- can I make the levels look more like water flowing and less like just squares
+- How can I engage the filter, sand, and other parts better
