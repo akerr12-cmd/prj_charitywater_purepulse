@@ -2,62 +2,59 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" >
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Pure Pulse</title>
 
-  <link rel="stylesheet" href="style/main.css" >
-  <link rel="stylesheet" href="style/title.css" >
-  <link rel="stylesheet" href="style/independent.css" >
+  <link rel="stylesheet" href="style/main.css">
+  <link rel="stylesheet" href="style/title.css">
+  <link rel="stylesheet" href="style/independent.css">
   <link rel="stylesheet" href="style/impact.css">
 </head>
 
 <body>
 
   <!-- TITLE SCREEN -->
-<section id="title-screen" class="screen">
-  <div class="title-overlay"></div>
+  <section id="title-screen" class="screen">
+    <div class="title-overlay"></div>
 
-  <header class="title-header">
-    <a 
-      href="https://www.charitywater.org"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="cw-brand"
-    >
-      <img 
-        src="assets/images/water-can-transparent.png"
-        alt="charity: water Jerry Can logo"
-        class="cw-logo"
-      />
-      <span class="cw-link-text">charitywater.org</span>
-    </a>
-  </header>
+    <header class="title-header">
+      <a href="https://www.charitywater.org" target="_blank" rel="noopener noreferrer" class="cw-brand">
+        <img src="assets/images/water-can-transparent.png" alt="charity: water Jerry Can logo" class="cw-logo" />
+        <span class="cw-link-text">charitywater.org</span>
+      </a>
+    </header>
 
-  <div class="title-center">
-    <h1 class="title-heading">Pure Pulse</h1>
-    <p class="title-subheading">A rhythm journey inspired by real communities.</p>
+    <div class="title-center">
+      <h1 class="title-heading">Pure Pulse</h1>
+      <p class="title-subheading">A rhythm journey inspired by real communities.</p>
 
-    <p class="title-microcopy">
-      Every rhythm brings us closer to clean water for all.
-    </p>
+      <p class="title-microcopy">
+        Every rhythm brings us closer to clean water for all.
+      </p>
 
-    <div class="title-buttons">
-      <button id="start-btn" class="btn-primary">Start</button>
-      <button id="how-to-play-btn" class="btn-secondary">How to Play</button>
+      <div class="title-buttons">
+        <button id="start-btn" class="btn-primary">Start</button>
+        <button id="how-to-play-btn" class="btn-secondary">How to Play</button>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
 
 
   <!-- GAME SCREEN -->
   <section id="game-screen" class="screen hidden">
     <header class="top-bar">
-      <div class="purity">Purity: <span id="purity-value">0%</span></div>
-      <div class="level-name">Level 1: Malawi</div>
-      <div class="sustainability">Sustain: <span id="sustain-value">100%</span></div>
+      <h2 class="game-screen-title">Pure Pulse</h2>
+      <img src="assets/images/cw_logo_white.png" alt="charity: water horizontal logo" class="cw-logo-horizontal" />
+
+      <div class="top-bar-stats">
+        <div class="purity">Purity: <span id="purity-value">0%</span></div>
+        <div class="level-name">Level 1: Malawi</div>
+        <div class="sustainability">Sustain: <span id="sustain-value">100%</span></div>
+      </div>
     </header>
+
 
     <div id="grid-container"></div>
 
@@ -79,56 +76,52 @@
     </div>
   </section>
 
-<!-- IMPACT REVEAL SCREEN -->
-<section id="impact-reveal" class="screen hidden">
-  <div class="impact-bg"></div>
+  <!-- IMPACT REVEAL SCREEN -->
+  <section id="impact-reveal" class="screen hidden">
+    <div class="impact-bg"></div>
 
-  <div class="impact-content">
-    <h1>Your rhythm is creating real change.</h1>
+    <div class="impact-content">
+      <h1>Your rhythm is creating real change.</h1>
 
-    <p class="impact-sub">
-      Today, you helped bring clean water closer to a community.
-    </p>
+      <p class="impact-sub">
+        Today, you helped bring clean water closer to a community.
+      </p>
 
-    <p class="impact-metric">
-      0.3 liters contributed today
-    </p>
+      <p class="impact-metric">
+        0.3 liters contributed today
+      </p>
 
-    <p class="impact-microcopy">
-      Thank you for showing up today. Together, we move water closer.
-    </p>
+      <p class="impact-microcopy">
+        Thank you for showing up today. Together, we move water closer.
+      </p>
 
-    <button id="impact-continue-btn" class="btn-primary">
-      Continue
-    </button>
-  </div>
-
-  <img 
-    src="assets/images/water-can-transparent.png"
-    alt="charity: water Jerry Can logo"
-    class="impact-logo"
-  />
-</section>
-
-<!-- IMPACT REPORT (STATS SCREEN) -->
-<section id="impact-screen" class="screen hidden">
-  <div class="impact-container">
-    <h2>Project Completed</h2>
-
-    <div class="impact-photo"></div>
-
-    <div class="impact-stats">
-      <p>Liters Filtered: <span id="liters-value">0</span>L</p>
-      <p>Hours Saved: <span id="hours-value">0</span></p>
-      <p>Monitoring: <span id="monitor-value">100%</span></p>
+      <button id="impact-continue-btn" class="btn-primary">
+        Continue
+      </button>
     </div>
 
-    <button id="share-btn" class="primary-btn">Share Your Impact</button>
-    <button id="play-again-btn" class="secondary-btn">Keep the Pulse Going</button>
-    <button id="back-to-menu-btn-impact" class="secondary-btn">Main Menu</button>
-    <button id="replay-tutorial-btn" class="secondary-btn">Replay Tutorial</button>
-  </div>
-</section>
+    <img src="assets/images/water-can-transparent.png" alt="charity: water Jerry Can logo" class="impact-logo" />
+  </section>
+
+  <!-- IMPACT REPORT (STATS SCREEN) -->
+  <section id="impact-screen" class="screen hidden">
+    <div class="impact-container">
+      <h2>Project Completed</h2>
+
+      <div class="impact-photo"></div>
+
+      <div class="impact-stats">
+        <p>Liters Filtered: <span id="liters-value">0</span>L</p>
+        <p>Hours Saved: <span id="hours-value">0</span></p>
+        <p>Monitoring: <span id="monitor-value">100%</span></p>
+      </div>
+
+      <button id="share-btn" class="primary-btn">Share Your Impact</button>
+      <button id="play-again-btn" class="secondary-btn">Keep the Pulse Going</button>
+      <button id="back-to-menu-btn-impact" class="secondary-btn">Main Menu</button>
+      <button id="replay-tutorial-btn" class="secondary-btn">Replay Tutorial</button>
+    </div>
+  </section>
 
 
 
@@ -147,23 +140,23 @@
 
   <!-- INDEPENDENT CHALLENGE -->
   <section id="independent-challenge" class="screen hidden">
-  <div class="challenge-header">
-    <h1>Find the rhythm on your own.</h1>
-    <p>Follow the beat. Press A, S, D, or F when each tile lights up.</p>
-  </div>
+    <div class="challenge-header">
+      <h1>Find the rhythm on your own.</h1>
+      <p>Follow the beat. Press A, S, D, or F when each tile lights up.</p>
+    </div>
 
-  <div class="beat-track">
-    <div class="beat-tile" data-index="0" data-key="A"><span>A</span></div>
-    <div class="beat-tile" data-index="1" data-key="S"><span>S</span></div>
-    <div class="beat-tile" data-index="2" data-key="D"><span>D</span></div>
-    <div class="beat-tile" data-index="3" data-key="F"><span>F</span></div>
-  </div>
+    <div class="beat-track">
+      <div class="beat-tile" data-index="0" data-key="A"><span>A</span></div>
+      <div class="beat-tile" data-index="1" data-key="S"><span>S</span></div>
+      <div class="beat-tile" data-index="2" data-key="D"><span>D</span></div>
+      <div class="beat-tile" data-index="3" data-key="F"><span>F</span></div>
+    </div>
 
-  <div class="challenge-status">
-    <p id="status-text">Listen for the beat. Get ready…</p>
-    <p id="accuracy-text">Accuracy: 0%</p>
-  </div>
-</section>
+    <div class="challenge-status">
+      <p id="status-text">Listen for the beat. Get ready…</p>
+      <p id="accuracy-text">Accuracy: 0%</p>
+    </div>
+  </section>
 
 
   <!-- Scripts -->

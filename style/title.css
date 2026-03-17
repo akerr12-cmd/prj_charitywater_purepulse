@@ -10,7 +10,11 @@
 .title-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 70%);
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.55) 70%
+  );
   pointer-events: none;
 }
 
@@ -35,7 +39,7 @@
 
 .cw-link-text {
   font-size: 0.9rem;
-  color: #FFC907;
+  color: #ffc907;
   font-weight: 600;
   letter-spacing: 0.5px;
 }
@@ -54,8 +58,8 @@
   font-size: 4rem;
   color: #ffffff;
   margin: 0;
-  letter-spacing: 1.5px;
-  font-weight: 700;
+  letter-spacing: var(--heading-tracking);
+  font-weight: var(--heading-weight);
 }
 
 .title-subheading {
@@ -80,8 +84,8 @@
 }
 
 .btn-primary {
-  background: #FFC907;
-  color: #1A1A1A;
+  background: #ffc907;
+  color: #1a1a1a;
   padding: 0.9rem 2.2rem;
   border-radius: 8px;
   border: none;
@@ -97,8 +101,8 @@
 
 .btn-secondary {
   background: transparent;
-  border: 2px solid #FFC907;
-  color: #FFC907;
+  border: 2px solid #ffc907;
+  color: #ffc907;
   padding: 0.9rem 2.2rem;
   border-radius: 8px;
   font-size: 1.1rem;
@@ -113,8 +117,8 @@
 
 /* Press Start–style animation for the Start button */
 .btn-primary {
-  background: #FFC907;
-  color: #1A1A1A;
+  background: #ffc907;
+  color: #1a1a1a;
   padding: 0.9rem 2.2rem;
   border-radius: 8px;
   border: none;
@@ -124,11 +128,22 @@
   letter-spacing: 1px;
   animation: startPulse 1.4s ease-in-out infinite;
   opacity: 0.9;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 @keyframes startPulse {
-  0% { opacity: 0; transform: translateY(4px); }
-  50% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(4px); }
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
 }

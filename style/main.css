@@ -9,7 +9,7 @@
 }
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-primary);
   background: var(--bg-dark);
   color: var(--text-light);
   height: 100vh;
@@ -36,11 +36,29 @@ body {
 
 /* Charity: Water Brand Colors */
 :root {
+  --font-primary: "Inter", "Segoe UI", "Trebuchet MS", sans-serif;
+  --heading-weight: 700;
+  --heading-tracking: 0.04em;
   --cw-yellow: #fbd400;
   --cw-blue: #2e97d1;
   --cw-dark: #002e5d;
   --bg-dark: #001b2e;
   --text-light: #ffffff;
+}
+
+h1,
+h2,
+h3,
+.title-heading,
+.game-screen-title,
+.impact-content h1 {
+  font-family: var(--font-primary);
+  font-weight: var(--heading-weight);
+  letter-spacing: var(--heading-tracking);
+}
+
+button {
+  font-family: inherit;
 }
 
 /* ------------------------------
@@ -106,9 +124,31 @@ body {
 .top-bar {
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  font-size: 1rem;
+  flex-direction: column;
+  gap: 0.75rem;
   margin-bottom: 1.5rem;
+}
+
+.game-screen-title {
+  margin: 0;
+  text-align: center;
+  font-size: 1.75rem;
+  letter-spacing: 0.04em;
+}
+
+.cw-logo-horizontal {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.top-bar-stats {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
 }
 
 #grid-container {
