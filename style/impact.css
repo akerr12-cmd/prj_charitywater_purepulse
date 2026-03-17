@@ -66,8 +66,8 @@
 
 /* Continue button */
 #impact-continue-btn {
-  background: #FFC907;
-  color: #1A1A1A;
+  background: #ffc907;
+  color: #1a1a1a;
   padding: 0.9rem 2.2rem;
   border-radius: 8px;
   border: none;
@@ -92,4 +92,137 @@
   background: #000000;
   padding: 0.4rem 0.6rem;
   border-radius: 4px;
+}
+
+/* ====================================================================
+   RESPONSIVE DESIGN FOR IMPACT SCREENS
+==================================================================== */
+
+/* Tablet (480px - 768px) */
+@media (max-width: 768px) {
+  .impact-content {
+    max-width: 400px;
+    padding: 3rem 2rem;
+  }
+
+  .impact-content h1 {
+    font-size: 2rem;
+  }
+
+  .impact-sub {
+    font-size: 1.1rem;
+  }
+
+  .impact-metric {
+    font-size: 1rem;
+  }
+
+  .impact-microcopy {
+    font-size: 0.9rem;
+    max-width: 360px;
+  }
+
+  #impact-continue-btn {
+    padding: 0.85rem 2rem;
+    font-size: 1rem;
+  }
+
+  .impact-logo {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    height: 40px;
+  }
+}
+
+/* Mobile (< 480px) */
+@media (max-width: 480px) {
+  #impact-reveal {
+    overflow-y: auto;
+  }
+
+  .impact-bg {
+    filter: brightness(0.5);
+  }
+
+  .impact-content {
+    position: static;
+    z-index: 2;
+    max-width: 100%;
+    width: 95%;
+    margin: 1rem auto;
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+
+  .impact-content h1 {
+    font-size: 1.6rem;
+    margin: 0 0 0.8rem;
+    line-height: 1.3;
+  }
+
+  .impact-sub {
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .impact-metric {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .impact-microcopy {
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+    max-width: 100%;
+  }
+
+  #impact-continue-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    width: 100%;
+    max-width: 240px;
+  }
+
+  .impact-logo {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    margin-top: 1.5rem;
+    height: 36px;
+    background: transparent;
+    padding: 0;
+  }
+}
+
+/* Small devices (< 360px) */
+@media (max-width: 360px) {
+  .impact-content {
+    width: 100%;
+    padding: 1.5rem 0.75rem;
+  }
+
+  .impact-content h1 {
+    font-size: 1.3rem;
+  }
+
+  .impact-sub {
+    font-size: 0.9rem;
+  }
+
+  .impact-metric {
+    font-size: 0.85rem;
+  }
+
+  .impact-microcopy {
+    font-size: 0.75rem;
+  }
+
+  #impact-continue-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1.2rem;
+  }
+
+  .impact-logo {
+    height: 28px;
+  }
 }
