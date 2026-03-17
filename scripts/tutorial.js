@@ -1,4 +1,4 @@
-import { showScreen } from "./screenManager.js";
+import { showScreen } from "./game.js";
 import { returnToMainMenu } from "./game.js";
 
 const tutorialScreen = document.getElementById("tutorial-screen");

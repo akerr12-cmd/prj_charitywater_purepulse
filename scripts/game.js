@@ -28,7 +28,7 @@ let taps = 0;
 let levelComplete = false;
 
 /* SCREEN SWITCHING */
-function showScreen(screen) {
+export function showScreen(screen) {
   titleScreen.classList.add("hidden");
   gameScreen.classList.add("hidden");
   impactScreen.classList.add("hidden");
