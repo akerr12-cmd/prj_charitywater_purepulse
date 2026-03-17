@@ -1,6 +1,6 @@
 
 import { onBeatSuccessGame, onBeatMissGame } from "./game.js";
-
+let isPaused = false;
 /* ---------------------------------------------------------
    PURE PULSE — AUDIO ENGINE
    Handles:
@@ -22,6 +22,26 @@ const pulseBtn = document.getElementById("pulse-btn");
 const tapFeedback = document.getElementById("tap-feedback");
 
 // ---------------------------------------------------------
+// PAUSE / RESUME
+// ---------------------------------------------------------
+// Pause beat scheduling
+window.addEventListener("pause-beat", () => {
+  isPaused = true;
+});
+
+// Resume beat scheduling
+window.addEventListener("resume-beat", () => {
+  isPaused = false;
+  nextBeatTime = audioCtx.currentTime + 0.1;
+  scheduler();
+});
+
+// Reset beat engine
+window.addEventListener("reset-beat", () => {
+  isPaused = false;
+  nextBeatTime = audioCtx.currentTime + 0.1;
+});
+
 // Initialize Audio Context
 // ---------------------------------------------------------
 function initAudio() {
@@ -50,11 +70,10 @@ function playClick(time) {
 // Beat Scheduler (runs every animation frame)
 // ---------------------------------------------------------
 function scheduler() {
-  if (!isRunning) return;
+  if (!isRunning || isPaused) return;
 
   const currentTime = audioCtx.currentTime;
 
-  // Schedule beats slightly ahead of time
   while (nextBeatTime < currentTime + 0.1) {
     playClick(nextBeatTime);
     nextBeatTime += beatInterval;

@@ -42,6 +42,10 @@ function showScreen(screen) {
   gameScreen.classList.add("hidden");
   impactScreen.classList.add("hidden");
 
+  titleScreen.classList.remove("active");
+  gameScreen.classList.remove("active");
+  impactScreen.classList.remove("active");
+
   screen.classList.remove("hidden");
   screen.classList.add("active");
 }
@@ -136,10 +140,51 @@ function showImpactReport() {
 }
 
 /* ---------------------------------------------------------
+   PAUSE + RESET BUTTONS
+--------------------------------------------------------- */
+
+const pauseBtn = document.getElementById("pause-btn");
+const resetBtn = document.getElementById("reset-btn");
+
+let isPaused = false;
+
+function pauseGame() {
+  isPaused = !isPaused;
+
+  if (isPaused) {
+    pauseBtn.textContent = "Resume";
+    window.dispatchEvent(new Event("pause-beat")); // tells audio.js to pause
+  } else {
+    pauseBtn.textContent = "Pause";
+    window.dispatchEvent(new Event("resume-beat")); // tells audio.js to resume
+  }
+}
+
+function resetLevel() {
+  purity = 0;
+  sustainability = 100;
+  taps = 0;
+  levelComplete = false;
+
+  purityValue.textContent = "0%";
+  sustainValue.textContent = "100%";
+
+  resetWater();
+  renderGrid();
+
+  // Restart beat engine
+  window.dispatchEvent(new Event("reset-beat"));
+}
+
+
+/* ---------------------------------------------------------
    EVENT LISTENERS
 --------------------------------------------------------- */
 startBtn.addEventListener("click", startGame);
 playAgainBtn.addEventListener("click", startGame);
+pauseBtn.addEventListener("click", pauseGame);
+resetBtn.addEventListener("click", resetLevel);
+
 
 /* ---------------------------------------------------------
    INITIAL LOAD
