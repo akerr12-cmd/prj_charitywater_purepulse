@@ -2,13 +2,14 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8" >
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Pure Pulse</title>
 
-  <link rel="stylesheet" href="style/main.css" />
-  <link rel="stylesheet" href="style/title.css" />
-  <link rel="stylesheet" href="style/independent.css" />
+  <link rel="stylesheet" href="style/main.css" >
+  <link rel="stylesheet" href="style/title.css" >
+  <link rel="stylesheet" href="style/independent.css" >
+  <link rel="stylesheet" href="style/impact.css">
 </head>
 
 <body>
@@ -109,6 +110,27 @@
   />
 </section>
 
+<!-- IMPACT REPORT (STATS SCREEN) -->
+<section id="impact-screen" class="screen hidden">
+  <div class="impact-container">
+    <h2>Project Completed</h2>
+
+    <div class="impact-photo"></div>
+
+    <div class="impact-stats">
+      <p>Liters Filtered: <span id="liters-value">0</span>L</p>
+      <p>Hours Saved: <span id="hours-value">0</span></p>
+      <p>Monitoring: <span id="monitor-value">100%</span></p>
+    </div>
+
+    <button id="share-btn" class="primary-btn">Share Your Impact</button>
+    <button id="play-again-btn" class="secondary-btn">Keep the Pulse Going</button>
+    <button id="back-to-menu-btn-impact" class="secondary-btn">Main Menu</button>
+    <button id="replay-tutorial-btn" class="secondary-btn">Replay Tutorial</button>
+  </div>
+</section>
+
+
 
   <!-- TUTORIAL SCREEN -->
   <section id="tutorial-screen" class="screen hidden">
@@ -145,8 +167,9 @@
 
 
   <!-- Scripts -->
+  <!-- game.js is the module entry point (imports audio.js, grid.js, tutorial.js) -->
   <script type="module" src="scripts/game.js"></script>
-  <script src="scripts/independent.js"></script>
+  <script defer src="scripts/independent.js"></script>
 
 
 </body>

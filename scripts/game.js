@@ -5,9 +5,11 @@ import { renderGrid, moveWaterForward, resetWater, levelOne } from "./grid.js";
 /* DOM ELEMENTS */
 const titleScreen = document.getElementById("title-screen");
 const gameScreen = document.getElementById("game-screen");
+const impactRevealScreen = document.getElementById("impact-reveal");
 const impactScreen = document.getElementById("impact-screen");
 
 const startBtn = document.getElementById("start-btn");
+const impactContinueBtn = document.getElementById("impact-continue-btn");
 const playAgainBtn = document.getElementById("play-again-btn");
 const howToPlayBtn = document.getElementById("how-to-play-btn");
 
@@ -29,13 +31,26 @@ let levelComplete = false;
 
 /* SCREEN SWITCHING */
 export function showScreen(screen) {
+  const target =
+    typeof screen === "string" ? document.getElementById(screen) : screen;
+  if (!target) return;
+
   document.querySelectorAll(".screen").forEach((section) => {
     section.classList.add("hidden");
     section.classList.remove("active");
   });
 
-  screen.classList.remove("hidden");
-  screen.classList.add("active");
+  target.classList.remove("hidden");
+  target.classList.add("active");
+}
+
+export function hideScreen(screen) {
+  const target =
+    typeof screen === "string" ? document.getElementById(screen) : screen;
+  if (!target) return;
+
+  target.classList.add("hidden");
+  target.classList.remove("active");
 }
 
 /* START GAME */
@@ -98,11 +113,11 @@ function showImpactReport() {
   const liters = taps * 10;
   const hours = Math.floor(taps / 4);
 
-  litersValue.textContent = liters;
-  hoursValue.textContent = hours;
+  if (litersValue) litersValue.textContent = liters;
+  if (hoursValue) hoursValue.textContent = hours;
 
   window.dispatchEvent(new Event("stop-beat"));
-  showScreen(impactScreen);
+  showScreen("impact-reveal");
 }
 
 /* PAUSE + RESET */
@@ -156,20 +171,35 @@ export function returnToMainMenu() {
 }
 
 /* EVENT LISTENERS */
-startBtn.addEventListener("click", startGame);
-playAgainBtn.addEventListener("click", startGame);
-pauseBtn.addEventListener("click", pauseGame);
-resetBtn.addEventListener("click", resetLevel);
+if (startBtn) startBtn.addEventListener("click", startGame);
+if (playAgainBtn) playAgainBtn.addEventListener("click", startGame);
+if (impactContinueBtn) {
+  impactContinueBtn.addEventListener("click", () => {
+    hideScreen("impact-reveal");
+    showScreen("impact-screen");
+  });
+}
+if (pauseBtn) pauseBtn.addEventListener("click", pauseGame);
+if (resetBtn) resetBtn.addEventListener("click", resetLevel);
 
-backToMenuBtn.addEventListener("click", returnToMainMenu);
-backToMenuBtnImpact.addEventListener("click", returnToMainMenu);
+if (backToMenuBtn) backToMenuBtn.addEventListener("click", returnToMainMenu);
+if (backToMenuBtnImpact) {
+  backToMenuBtnImpact.addEventListener("click", returnToMainMenu);
+}
 
-howToPlayBtn.addEventListener("click", () => {
-  startTutorial();
-});
-replayTutorialBtn.addEventListener("click", () => {
-  startTutorial();
-});
+if (howToPlayBtn) {
+  howToPlayBtn.addEventListener("click", () => {
+    startTutorial();
+  });
+}
+
+if (replayTutorialBtn) {
+  replayTutorialBtn.addEventListener("click", () => {
+    startTutorial();
+  });
+}
 
 /* INITIAL LOAD */
+window.showScreen = showScreen;
+window.hideScreen = hideScreen;
 showScreen(titleScreen);
