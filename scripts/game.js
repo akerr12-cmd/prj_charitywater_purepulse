@@ -29,11 +29,13 @@ let levelComplete = false;
 
 /* SCREEN SWITCHING */
 export function showScreen(screen) {
-  titleScreen.classList.add("hidden");
-  gameScreen.classList.add("hidden");
-  impactScreen.classList.add("hidden");
+  document.querySelectorAll(".screen").forEach((section) => {
+    section.classList.add("hidden");
+    section.classList.remove("active");
+  });
 
   screen.classList.remove("hidden");
+  screen.classList.add("active");
 }
 
 /* START GAME */
