@@ -77,14 +77,10 @@ export function onBeatSuccessGame() {
 
   taps += 1;
 
-  // Increase purity
-  purity = Math.min(100, purity + 5);
-  purityValue.textContent = purity + "%";
+  // Baseline purity gain per beat
+  increasePurity(5);
 
-  // Move water forward
   moveWaterForward();
-
-  // Check win condition
   checkForWin();
 }
 
@@ -176,6 +172,13 @@ function resetLevel() {
   window.dispatchEvent(new Event("reset-beat"));
 }
 
+/* ---------------------------------------------------------
+   PURITY SYSTEM - clean place to manage purity changes (expandable for future animations, sound effects, etc.)
+--------------------------------------------------------- */
+export function increasePurity(amount) {
+  purity = Math.min(100, purity + amount);
+  purityValue.textContent = purity + "%";
+}
 
 /* ---------------------------------------------------------
    EVENT LISTENERS

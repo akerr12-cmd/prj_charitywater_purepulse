@@ -1,3 +1,5 @@
+import { increasePurity } from "./game.js";
+
 /* ---------------------------------------------------------
    PURE PULSE — GRID SYSTEM
    Handles:
@@ -101,7 +103,7 @@ export function moveWaterForward() {
   // Hook for purity logic (keep this!)
   const tileType = currentLevel.grid[waterPos.row][waterPos.col];
   if (tileType === TILE.BIOSAND) {
-    // increasePurity(10);
+     increasePurity(10);
   }
 
   // Re-render grid with updated water position
