@@ -7,6 +7,8 @@
   <title>The Pure Pulse</title>
 
   <link rel="stylesheet" href="style/main.css" />
+  <link rel="stylesheet" href="styles/independent.css" />
+
 </head>
 
 <body>
@@ -82,8 +84,31 @@
 
   </section>
 
+  <!-- INDEPENDENT CHALLENGE -->
+  <section id="independent-challenge" class="screen hidden">
+  <div class="challenge-header">
+    <h1>Find the rhythm on your own.</h1>
+    <p>Follow the beat. Press A, S, D, or F when each tile lights up.</p>
+  </div>
+
+  <div class="beat-track">
+    <div class="beat-tile" data-index="0" data-key="A"><span>A</span></div>
+    <div class="beat-tile" data-index="1" data-key="S"><span>S</span></div>
+    <div class="beat-tile" data-index="2" data-key="D"><span>D</span></div>
+    <div class="beat-tile" data-index="3" data-key="F"><span>F</span></div>
+  </div>
+
+  <div class="challenge-status">
+    <p id="status-text">Listen for the beat. Get ready…</p>
+    <p id="accuracy-text">Accuracy: 0%</p>
+  </div>
+</section>
+
+
   <!-- Scripts -->
   <script type="module" src="scripts/game.js"></script>
+  <script src="scripts/independent.js"></script>
+
 
 </body>
 

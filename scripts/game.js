@@ -163,8 +163,12 @@ resetBtn.addEventListener("click", resetLevel);
 backToMenuBtn.addEventListener("click", returnToMainMenu);
 backToMenuBtnImpact.addEventListener("click", returnToMainMenu);
 
-howToPlayBtn.addEventListener("click", startTutorial);
-replayTutorialBtn.addEventListener("click", startTutorial);
+howToPlayBtn.addEventListener("click", () => {
+  startTutorial();
+});
+replayTutorialBtn.addEventListener("click", () => {
+  startTutorial();
+});
 
 /* INITIAL LOAD */
 showScreen(titleScreen);
