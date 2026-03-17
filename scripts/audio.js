@@ -79,7 +79,7 @@ function scheduler() {
   const currentTime = audioCtx.currentTime;
 
   while (nextBeatTime < currentTime + 0.1) {
-    playClick(nextBeatTime);
+   // playClick(nextBeatTime);
     nextBeatTime += beatInterval;
   }
 
@@ -94,10 +94,15 @@ export function startBeat() {
 
   if (!isRunning) {
     isRunning = true;
+
+    drumLoop.currentTime = 0;
+    drumLoop.play();
+
     nextBeatTime = audioCtx.currentTime + 0.1;
     scheduler();
   }
 }
+
 
 // ---------------------------------------------------------
 // Handle Tap Input
