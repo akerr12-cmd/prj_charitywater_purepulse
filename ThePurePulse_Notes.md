@@ -224,3 +224,24 @@ A living document tracking progress, decisions, and next steps for the Charity: 
 - Add more charity:water recognition/logo to front page
 - Add images from charity:water completed missions
 - Can in incorporate a map that allows the player to pick their level and difficulty? (these should be from completed charity:water missions)
+
+---
+
+## Level Up from Rubic
+
+- Gameplay includes a working twist (e.g., obstacles, penalties) that enhances the experience
+- A working Reset button is included and clearly controls gameplay
+- A win condition triggers a clear celebration (e.g., confetti, animation)
+  - add a dedicated win celebration effect to both the impact reveal and impact report screens
+  
+    - Impact Reveal Screen (Emotional Celebration)
+      - Add confetti or sparkles fading in softly
+      - Pulse glow on the background or headline
+      - Fade-in animation for the photo block (now moved here)
+      - Optional: ambient sound or soft drum loop synced to the rhythm
+
+    - Impact Report Screen (Stat-Based Celebration)
+      - Animated number pulses for liters, hours, monitoring
+      - Fireworks burst when the screen loads
+      - “Level Mastered!” badge fades in above the stats
+      - Optional: button glow or hover effects for Share / Play Again
