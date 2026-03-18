@@ -93,7 +93,7 @@ export function onBeatMissGame() {
 function checkForWin() {
   if (purity >= 50 && waterReachedVillage()) {
     levelComplete = true;
-    setTimeout(showImpactReport, 800);
+    setTimeout(showImpactReveal, 800);
   }
 }
 
@@ -111,7 +111,36 @@ function waterReachedVillage() {
   return row === end.row && col === end.col;
 }
 
-/* IMPACT REPORT */
+/* CONFETTI ANIMATION */
+function launchConfetti() {
+  const container = document.getElementById("confetti-container");
+  container.innerHTML = ""; // reset
+
+  const colors = ["#FFC907", "#ffffff", "#87CEEB"]; // yellow, white, soft blue
+
+  for (let i = 0; i < 40; i++) {
+    const confetti = document.createElement("div");
+    confetti.classList.add("confetti");
+
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.setProperty("--confetti-color", color);
+
+    confetti.style.left = Math.random() * 100 + "vw";
+    confetti.style.animationDelay = Math.random() * 0.5 + "s";
+    confetti.style.opacity = 0.7 + Math.random() * 0.3;
+
+    container.appendChild(confetti);
+  }
+}
+
+/* IMPACT REVEAL (EMOTIONAL MOMENT) */
+function showImpactReveal() {
+  window.dispatchEvent(new Event("stop-beat"));
+  showScreen("impact-reveal");
+  launchConfetti();
+}
+
+/* IMPACT REPORT (STATS) */
 function showImpactReport() {
   const liters = taps * 10;
   const hours = Math.floor(taps / 4);
@@ -119,8 +148,7 @@ function showImpactReport() {
   if (litersValue) litersValue.textContent = liters;
   if (hoursValue) hoursValue.textContent = hours;
 
-  window.dispatchEvent(new Event("stop-beat"));
-  showScreen("impact-reveal");
+  showScreen("impact-screen");
 }
 
 /* PAUSE + RESET */
@@ -176,16 +204,17 @@ export function returnToMainMenu() {
 /* EVENT LISTENERS */
 if (startBtn) startBtn.addEventListener("click", startGame);
 if (playAgainBtn) playAgainBtn.addEventListener("click", startGame);
+
 if (impactContinueBtn) {
   impactContinueBtn.addEventListener("click", () => {
     hideScreen("impact-reveal");
-    showScreen("impact-screen");
+    showImpactReport();
   });
 }
+
 if (pauseBtn) pauseBtn.addEventListener("click", pauseGame);
 if (resetBtn) resetBtn.addEventListener("click", resetLevel);
 
-// Pulse button: start beat and check tap timing
 if (pulseBtn) {
   pulseBtn.addEventListener("click", () => {
     startBeat();
@@ -215,6 +244,7 @@ if (replayTutorialBtn) {
 /* INITIAL LOAD */
 window.showScreen = showScreen;
 window.hideScreen = hideScreen;
+
 console.log("titleScreen element:", titleScreen);
 console.log("About to show title screen");
 showScreen(titleScreen);

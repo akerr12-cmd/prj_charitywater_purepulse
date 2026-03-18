@@ -1,13 +1,3 @@
-.impact-bg {
-  position: absolute;
-  inset: 0;
-  background-image: url("assets/images/clean_water_pouring.jpeg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  filter: brightness(0.9);
-  z-index: 1;
-}
 
 /* Fullscreen background */
 #impact-reveal {
@@ -42,6 +32,7 @@
   font-size: 2.4rem;
   margin: 0 0 1rem;
   line-height: 1.2;
+  animation: pulseGlow 2.4s ease-in-out infinite;
 }
 
 .impact-sub {
@@ -93,6 +84,65 @@
   padding: 0.4rem 0.6rem;
   border-radius: 4px;
 }
+
+#confetti-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 14px;
+  background-color: var(--confetti-color, #FFC907);
+  opacity: 0.9;
+  transform: rotate(15deg);
+  animation: confetti-fall 2.8s linear forwards;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-20px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    text-shadow: 0 0 0px rgba(255, 255, 255, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 14px rgba(255, 255, 255, 0.9);
+  }
+  100% {
+    text-shadow: 0 0 0px rgba(255, 255, 255, 0.4);
+  }
+}
+
+.impact-content > * {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeUp 0.8s ease forwards;
+}
+
+.impact-content h1 { animation-delay: 0.2s; }
+.impact-sub { animation-delay: 0.4s; }
+.impact-metric { animation-delay: 0.6s; }
+.impact-microcopy { animation-delay: 0.8s; }
+#impact-continue-btn { animation-delay: 1s; }
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 /* ====================================================================
    RESPONSIVE DESIGN FOR IMPACT SCREENS
@@ -226,3 +276,5 @@
     height: 28px;
   }
 }
+
+
