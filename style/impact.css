@@ -277,4 +277,72 @@
   }
 }
 
+#fireworks-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+}
 
+.firework {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--fw-color, #FFC907);
+  border-radius: 50%;
+  animation: firework-burst 900ms ease-out forwards;
+}
+
+@keyframes firework-burst {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--x), var(--y)) scale(0.2);
+    opacity: 0;
+  }
+}
+
+#level-mastered-badge {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%) scale(0.6);
+  background: rgba(255, 201, 7, 0.95);
+  color: #1a1a1a;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  opacity: 0;
+  z-index: 6;
+  animation: badgePop 1s ease forwards;
+  animation-delay: 0.4s;
+}
+
+@keyframes badgePop {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.6);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+.pulse-number {
+  animation: numberPulse 0.6s ease forwards;
+}
+
+@keyframes numberPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}

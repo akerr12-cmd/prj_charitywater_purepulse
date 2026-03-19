@@ -140,16 +140,57 @@ function showImpactReveal() {
   launchConfetti();
 }
 
+
+function launchFireworks() {
+  const container = document.getElementById("fireworks-container");
+  container.innerHTML = "";
+
+  const colors = ["#FFC907", "#ffffff", "#87CEEB"];
+
+  for (let i = 0; i < 18; i++) {
+    const fw = document.createElement("div");
+    fw.classList.add("firework");
+
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    fw.style.setProperty("--fw-color", color);
+
+    // random burst direction
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 180 + Math.random() * 140;
+
+    fw.style.setProperty("--x", `${Math.cos(angle) * distance}px`);
+    fw.style.setProperty("--y", `${Math.sin(angle) * distance}px`);
+
+    fw.style.left = "50%";
+    fw.style.top = "40%";
+
+    container.appendChild(fw);
+  }
+}
+
 /* IMPACT REPORT (STATS) */
 function showImpactReport() {
   const liters = taps * 10;
   const hours = Math.floor(taps / 4);
 
-  if (litersValue) litersValue.textContent = liters;
-  if (hoursValue) hoursValue.textContent = hours;
+  if (litersValue) {
+    litersValue.textContent = liters;
+    litersValue.classList.add("pulse-number");
+    setTimeout(() => litersValue.classList.remove("pulse-number"), 700);
+  }
+
+  if (hoursValue) {
+    hoursValue.textContent = hours;
+    hoursValue.classList.add("pulse-number");
+    setTimeout(() => hoursValue.classList.remove("pulse-number"), 700);
+  }
 
   showScreen("impact-screen");
+
+  // Fireworks + badge
+  launchFireworks();
 }
+
 
 /* PAUSE + RESET */
 const pauseBtn = document.getElementById("pause-btn");
