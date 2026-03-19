@@ -26,11 +26,38 @@ const strongBeatHistory = [];
 
 const tolerance = 0.08; // 80ms timing window
 
+const LEVEL_TRACKS = {
+  "malawi-easy": "assets/audio/lvl-1-drum-afrobeat.mp3",
+  "kenya-medium": "assets/audio/med_lvl_80bpm.wav",
+  "ethiopia-hard": "assets/audio/hard_lvl_119bpm.wav"
+};
+
+const DEFAULT_TRACK = "assets/audio/lvl-1-drum-afrobeat.mp3";
+let currentTrackSrc = DEFAULT_TRACK;
+
 // DOM elements
 const tapFeedback = document.getElementById("tap-feedback");
-const drumLoop = new Audio("assets/audio/lvl-1-drum-afrobeat.mp3");
+const drumLoop = new Audio(currentTrackSrc);
 drumLoop.loop = true;
 drumLoop.volume = 0.9;
+
+export function setLevelTrack(levelId) {
+  const requestedSrc = LEVEL_TRACKS[levelId] || DEFAULT_TRACK;
+  if (requestedSrc === currentTrackSrc) return;
+
+  currentTrackSrc = requestedSrc;
+
+  const wasRunning = isRunning;
+  drumLoop.pause();
+  drumLoop.src = currentTrackSrc;
+  drumLoop.load();
+
+  // Keep beat scheduling consistent after track switches.
+  if (wasRunning && !isPaused) {
+    drumLoop.currentTime = 0;
+    drumLoop.play();
+  }
+}
 
 
 // ---------------------------------------------------------

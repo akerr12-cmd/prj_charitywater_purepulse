@@ -4,7 +4,7 @@ import { increasePurity } from "./game.js";
    PURE PULSE - GRID SYSTEM
    Handles:
    - 6x6 grid rendering
-   - Path simulation from source to village
+   - Difficulty-based path layouts
    - Runtime consumable effects from level-start placements
 --------------------------------------------------------- */
 
@@ -18,20 +18,51 @@ const TILE = {
   VILLAGE: 4
 };
 
-export const levelOne = {
-  grid: [
-    [0, 0, 0, 0, 0, 0],
-    [1, 3, 3, 2, 3, 4],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0]
-  ],
-  startPos: { row: 1, col: 0 },
-  endPos: { row: 1, col: 5 }
+const LEVELS = {
+  "malawi-easy": {
+    grid: [
+      [0, 0, 0, 0, 0, 0],
+      [1, 3, 3, 2, 3, 4],
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0]
+    ],
+    startPos: { row: 1, col: 0 },
+    endPos: { row: 1, col: 5 }
+  },
+  "kenya-medium": {
+    // Medium path snakes through multiple rows.
+    grid: [
+      [0, 0, 0, 0, 0, 0],
+      [1, 3, 3, 3, 3, 3],
+      [0, 0, 0, 0, 0, 3],
+      [0, 0, 3, 3, 3, 3],
+      [0, 0, 3, 0, 0, 0],
+      [0, 0, 2, 3, 3, 4]
+    ],
+    startPos: { row: 1, col: 0 },
+    endPos: { row: 5, col: 5 }
+  },
+  "ethiopia-hard": {
+    // Hard path traverses most of the grid in a long route.
+    grid: [
+      [1, 3, 3, 3, 3, 3],
+      [0, 0, 0, 0, 0, 3],
+      [3, 3, 3, 3, 0, 3],
+      [3, 0, 0, 3, 0, 3],
+      [3, 0, 3, 3, 3, 3],
+      [3, 3, 3, 0, 0, 4]
+    ],
+    startPos: { row: 0, col: 0 },
+    endPos: { row: 5, col: 5 }
+  }
 };
 
-let currentLevel = levelOne;
+export const levelOne = LEVELS["malawi-easy"];
+
+let currentLevelId = "malawi-easy";
+let currentLevel = LEVELS[currentLevelId];
 let waterPos = { ...currentLevel.startPos };
 
 // Key: "row,col" -> value: "biosand" | "charcoal" | "sensor"
@@ -133,7 +164,6 @@ function applyConsumableEffect(row, col) {
   }
 
   if (placed === "sensor") {
-    // Lightweight bonus hook to represent objective sensing.
     increasePurity(2);
     consumedTiles.add(key);
     return;
@@ -165,6 +195,36 @@ function addPlacedConsumableClass(tile, row, col) {
   if (placed === "sensor") tile.classList.add("sensor");
 }
 
+function tileTypeToPlacement(type) {
+  if (type === TILE.SOURCE) return "source";
+  if (type === TILE.VILLAGE) return "village";
+  if (type === TILE.PIPE || type === TILE.BIOSAND) return "pipe";
+  return "empty";
+}
+
+export function setActiveLevel(levelId) {
+  if (!LEVELS[levelId]) {
+    currentLevelId = "malawi-easy";
+  } else {
+    currentLevelId = levelId;
+  }
+
+  currentLevel = LEVELS[currentLevelId];
+  waterPos = { ...currentLevel.startPos };
+  consumedTiles = new Set();
+}
+
+export function getPlacementLayout() {
+  return currentLevel.grid.map((row) => row.map((type) => tileTypeToPlacement(type)));
+}
+
+export function hasReachedVillage() {
+  return (
+    waterPos.row === currentLevel.endPos.row &&
+    waterPos.col === currentLevel.endPos.col
+  );
+}
+
 export function setPlacedConsumables(placements) {
   placedConsumables = new Map();
 
@@ -180,7 +240,6 @@ export function setPlacedConsumables(placements) {
     if (!inBounds(row, col)) return;
     if (!["biosand", "charcoal", "sensor"].includes(type)) return;
 
-    // Respect placement rules at runtime too.
     const baseType = currentLevel.grid[row][col];
     if (baseType === TILE.SOURCE || baseType === TILE.VILLAGE) return;
 
@@ -212,15 +271,10 @@ export function renderGrid() {
 }
 
 export function moveWaterForward() {
-  const atEnd =
-    waterPos.row === currentLevel.endPos.row &&
-    waterPos.col === currentLevel.endPos.col;
-
-  if (atEnd) return;
+  if (hasReachedVillage()) return;
 
   const path = getPathToVillage();
   if (!path || path.length < 2) {
-    // No traversable route from current position.
     return;
   }
 

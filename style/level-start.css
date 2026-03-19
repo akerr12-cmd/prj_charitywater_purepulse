@@ -77,6 +77,7 @@
   width: 80px;
   height: 80px;
   background: #ffffff;
+  border: 2px solid transparent;
   border-radius: 14px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.15);
   position: relative;
@@ -85,6 +86,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .consumable-card img {
@@ -106,6 +111,19 @@
 
 .consumable-card.dragging {
   opacity: 0.5;
+}
+
+.consumable-card:hover:not(.disabled):not(.dragging) {
+  transform: translateY(-2px);
+  border-color: rgba(251, 212, 0, 0.75);
+  box-shadow:
+    0 0 0 2px rgba(251, 212, 0, 0.35),
+    0 10px 18px rgba(46, 151, 209, 0.3);
+}
+
+.consumable-card:focus-visible {
+  outline: 2px solid #2e97d1;
+  outline-offset: 2px;
 }
 
 /* -------------------------
@@ -166,13 +184,28 @@
 .booster {
   padding: 8px 14px;
   background: #ffffff;
+  border: 1px solid rgba(0, 46, 93, 0.1);
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   font-size: 0.85rem;
   font-weight: 600;
   color: #333;
   opacity: 1;
-  transition: opacity 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.16s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.booster img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
 }
 
 .booster.locked {
@@ -189,8 +222,31 @@
   cursor: pointer;
 }
 
+.game-booster-strip .booster span {
+  line-height: 1;
+}
+
 .game-booster-strip .booster:not(.locked):hover {
   transform: translateY(-1px);
+  border-color: rgba(251, 212, 0, 0.8);
+  background: linear-gradient(180deg, #ffffff 0%, #fffbe7 100%);
+  box-shadow:
+    0 0 0 2px rgba(251, 212, 0, 0.35),
+    0 10px 18px rgba(46, 151, 209, 0.28);
+}
+
+.booster-strip .booster:not(.locked):hover {
+  transform: translateY(-1px);
+  border-color: rgba(251, 212, 0, 0.8);
+  background: linear-gradient(180deg, #ffffff 0%, #fffbe7 100%);
+  box-shadow:
+    0 0 0 2px rgba(251, 212, 0, 0.35),
+    0 10px 18px rgba(46, 151, 209, 0.28);
+}
+
+.booster:focus-visible {
+  outline: 2px solid #2e97d1;
+  outline-offset: 2px;
 }
 
 /* -------------------------

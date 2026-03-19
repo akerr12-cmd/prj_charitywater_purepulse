@@ -1,6 +1,14 @@
 import { startTutorial } from "./tutorial.js";
-import { startBeat, handleTap as checkTapTiming } from "./audio.js";
-import { renderGrid, moveWaterForward, resetWater, levelOne, setPlacedConsumables } from "./grid.js";
+import { startBeat, handleTap as checkTapTiming, setLevelTrack } from "./audio.js";
+import {
+  renderGrid,
+  moveWaterForward,
+  resetWater,
+  setPlacedConsumables,
+  setActiveLevel,
+  getPlacementLayout,
+  hasReachedVillage
+} from "./grid.js";
 import { getPlacementSnapshot, initDragAndDrop, lockPlacementGrid } from "./dragdrop.js";
 
 console.log("game.js loaded");
@@ -34,15 +42,6 @@ const CONSUMABLE_BOUNDS = {
   charcoal: { min: 2, max: 5 },
   sensor: { min: 1, max: 3 }
 };
-
-const PLACEMENT_LAYOUT = [
-  ["empty", "empty", "empty", "empty", "empty", "empty"],
-  ["source", "pipe", "pipe", "pipe", "pipe", "village"],
-  ["empty", "pipe", "empty", "empty", "pipe", "empty"],
-  ["empty", "pipe", "pipe", "pipe", "pipe", "empty"],
-  ["empty", "empty", "empty", "empty", "empty", "empty"],
-  ["empty", "empty", "empty", "empty", "empty", "empty"]
-];
 
 /* DOM ELEMENTS */
 const titleScreen = document.getElementById("title-screen");
@@ -160,12 +159,14 @@ function renderDifficultyPips(count) {
 }
 
 function renderLevelStartGrids() {
+  const layout = getPlacementLayout();
+
   if (lsMiniGridPreview) lsMiniGridPreview.innerHTML = "";
   if (lsMainGrid) lsMainGrid.innerHTML = "";
 
   for (let row = 0; row < 6; row += 1) {
     for (let col = 0; col < 6; col += 1) {
-      const tileType = PLACEMENT_LAYOUT[row][col];
+      const tileType = layout[row][col];
 
       if (lsMiniGridPreview) {
         const mini = document.createElement("div");
@@ -217,6 +218,8 @@ function updateLevelMetaInUi() {
 }
 
 function prepareLevelStart() {
+  setActiveLevel(selectedLevelId);
+  setLevelTrack(selectedLevelId);
   updateLevelMetaInUi();
   renderLevelStartGrids();
   refreshConsumableInventory();
@@ -251,6 +254,9 @@ function unlockGameBoosters() {
 
 /* START GAME */
 export function startGame() {
+  setActiveLevel(selectedLevelId);
+  setLevelTrack(selectedLevelId);
+
   purity = 0;
   sustainability = 100;
   taps = 0;
@@ -300,24 +306,10 @@ export function onBeatMissGame() {
 
 /* WIN CHECK */
 function checkForWin() {
-  if (purity >= 50 && waterReachedVillage()) {
+  if (purity >= 50 && hasReachedVillage()) {
     levelComplete = true;
     setTimeout(showImpactReveal, 800);
   }
-}
-
-function waterReachedVillage() {
-  const end = levelOne.endPos;
-  const waterTile = document.querySelector(".water");
-  if (!waterTile) return false;
-
-  const tiles = Array.from(document.querySelectorAll("#grid-container .tile"));
-  const index = tiles.indexOf(waterTile);
-
-  const row = Math.floor(index / 6);
-  const col = index % 6;
-
-  return row === end.row && col === end.col;
 }
 
 /* CONFETTI */
@@ -502,6 +494,7 @@ if (levelOptions.length) {
       levelOptions.forEach((btn) => btn.classList.remove("selected"));
       option.classList.add("selected");
       selectedLevelId = option.dataset.levelId;
+      setLevelTrack(selectedLevelId);
     });
   });
 }

@@ -5,6 +5,12 @@
 
 let draggedItem = null;
 
+const CONSUMABLE_IMAGE_BY_TYPE = {
+  biosand: "BioSand.png",
+  charcoal: "Charcoal.png",
+  sensor: "Sensor.png"
+};
+
 /* -----------------------------
    1. INVENTORY DRAG START
    ----------------------------- */
@@ -105,9 +111,10 @@ function isValidPlacement(tile, item) {
 
 function placeConsumable(tile, type) {
   tile.dataset.consumable = type;
+  const imageName = CONSUMABLE_IMAGE_BY_TYPE[type] || "BioSand.png";
 
   tile.innerHTML = `
-    <img src="assets/icons/${type}.png" class="placed-consumable">
+    <img src="assets/images/${imageName}" class="placed-consumable" alt="${type} consumable">
   `;
 }
 
