@@ -243,6 +243,9 @@ export function setPlacedConsumables(placements) {
     const baseType = currentLevel.grid[row][col];
     if (baseType === TILE.SOURCE || baseType === TILE.VILLAGE) return;
 
+    // Keep placement constrained to tiles that are part of water flow.
+    if (baseType !== TILE.PIPE && baseType !== TILE.BIOSAND) return;
+
     placedConsumables.set(posKey(row, col), type);
   });
 }

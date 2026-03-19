@@ -92,14 +92,19 @@ function isValidPlacement(tile, item) {
   const type = item.dataset.type;
   const tileType = tile.dataset.type; // from your grid renderer
 
+  // Only allow placement on active flow path tiles.
+  if (tileType !== "pipe") {
+    return false;
+  }
+
   // Sensors only go on pipes
   if (type === "sensor") {
     return tileType === "pipe";
   }
 
-  // BioSand + Charcoal can go on pipe or empty
+  // BioSand + Charcoal are restricted to flow path tiles.
   if (type === "biosand" || type === "charcoal") {
-    return tileType === "pipe" || tileType === "empty";
+    return tileType === "pipe";
   }
 
   return false;
