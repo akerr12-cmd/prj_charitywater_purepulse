@@ -45,6 +45,7 @@ window.addEventListener("pause-beat", () => {
 // Resume beat scheduling
 window.addEventListener("resume-beat", () => {
   isPaused = false;
+  if (!audioCtx) return;
   audioCtx?.resume();
   drumLoop.play(); 
   nextBeatTime = audioCtx.currentTime + 0.1;
@@ -60,7 +61,9 @@ window.addEventListener("reset-beat", () => {
   lastStrongBeatTime = 0;
   strongBeatInterval = beatInterval;
   strongBeatHistory.length = 0;
-  nextBeatTime = audioCtx.currentTime + 0.1;
+  if (audioCtx) {
+    nextBeatTime = audioCtx.currentTime + 0.1;
+  }
 });
 
 // Fully stop and reset beat engine

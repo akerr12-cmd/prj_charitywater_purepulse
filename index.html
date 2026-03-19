@@ -8,6 +8,8 @@
 
   <link rel="stylesheet" href="style/main.css">
   <link rel="stylesheet" href="style/title.css">
+  <link rel="stylesheet" href="style/level-select.css">
+  <link rel="stylesheet" href="style/level-start.css">
   <link rel="stylesheet" href="style/independent.css">
   <link rel="stylesheet" href="style/impact.css">
 </head>
@@ -42,11 +44,81 @@
 
   <!-- LEVEL SELECT SCREEN -->
   <section id="level-select-screen" class="screen hidden">
-  <h1>Select a Region</h1>
-  <div id="impact-map"></div>
-  <div class="region-buttons">
-    <!-- Buttons will populate dynamically based on map regions -->
+    <div class="level-select-shell">
+      <h2 class="level-select-title">Select Your Mission</h2>
+      <p class="level-select-subtitle">Choose by location and difficulty.</p>
+
+      <div id="level-options" class="level-options">
+        <button class="level-option selected" data-level-id="malawi-easy" type="button">
+          <span class="level-option-name">Machinga, Malawi</span>
+          <span class="level-option-difficulty">Difficulty: Easy</span>
+        </button>
+
+        <button class="level-option" data-level-id="kenya-medium" type="button">
+          <span class="level-option-name">Turkana, Kenya</span>
+          <span class="level-option-difficulty">Difficulty: Medium</span>
+        </button>
+
+        <button class="level-option" data-level-id="ethiopia-hard" type="button">
+          <span class="level-option-name">Amhara, Ethiopia</span>
+          <span class="level-option-difficulty">Difficulty: Hard</span>
+        </button>
+      </div>
+
+      <div class="level-select-actions">
+        <button id="level-select-continue-btn" class="btn-primary" type="button">Continue</button>
+        <button id="level-select-back-btn" class="btn-secondary" type="button">Back</button>
+      </div>
+    </div>
+  </section>
+
+
+<!-- LEVEL START SCREEN -->
+<section id="level-start-screen" class="screen hidden">
+
+  <header class="level-header">
+    <h2 id="ls-level-title">Level 1 — Malawi</h2>
+    <div id="ls-region-tag" class="region-tag">East Africa — Malawi</div>
+    <div id="ls-difficulty-icons" class="difficulty-icons"></div>
+  </header>
+
+  <!-- Mini Grid Preview -->
+  <div id="ls-mini-grid-preview" class="mini-grid-preview"></div>
+
+  <!-- Consumable Inventory -->
+  <div id="ls-inventory-bar" class="inventory-bar">
+    <div class="consumable-card" data-type="biosand" draggable="true">
+      <img src="assets/icons/biosand.png" alt="BioSand Filter">
+      <span class="qty">3</span>
+    </div>
+
+    <div class="consumable-card" data-type="charcoal" draggable="true">
+      <img src="assets/icons/charcoal.png" alt="Charcoal Filter">
+      <span class="qty">5</span>
+    </div>
+
+    <div class="consumable-card" data-type="sensor" draggable="true">
+      <img src="assets/icons/sensor.png" alt="Sensor">
+      <span class="qty">2</span>
+    </div>
   </div>
+
+  <!-- Main Grid Placement Area -->
+  <div id="ls-main-grid" class="main-grid"></div>
+
+  <!-- Booster Strip (Locked Until Flow Starts) -->
+  <div id="ls-booster-strip" class="booster-strip">
+    <div class="booster locked" data-type="purity-surge">Purity Surge</div>
+    <div class="booster locked" data-type="pipe-repair">Pipe Repair</div>
+    <div class="booster locked" data-type="rhythm-sync">Rhythm Sync</div>
+  </div>
+
+  <!-- Start Flow Button -->
+  <button id="ls-start-flow-btn" class="btn-primary">Start Flow</button>
+
+  <!-- Back Button -->
+  <button id="ls-back-btn" class="btn-secondary">Back</button>
+
 </section>
 
 
@@ -59,7 +131,7 @@
 
       <div class="top-bar-stats">
         <div class="purity">Purity: <span id="purity-value">0%</span></div>
-        <div class="level-name">Level 1: Malawi</div>
+        <div id="game-level-name" class="level-name">Level 1: Malawi (Easy)</div>
         <div class="sustainability">Sustain: <span id="sustain-value">100%</span></div>
       </div>
     </header>
@@ -70,6 +142,12 @@
     <div class="rhythm-zone">
       <button id="pulse-btn" class="pulse-btn">TAP THE PULSE</button>
       <p id="tap-feedback" class="tap-feedback"></p>
+    </div>
+
+    <div id="game-booster-strip" class="booster-strip game-booster-strip">
+      <button id="booster-purity-surge" class="booster locked" data-type="purity-surge" type="button">Purity Surge</button>
+      <button id="booster-pipe-repair" class="booster locked" data-type="pipe-repair" type="button">Pipe Repair</button>
+      <button id="booster-rhythm-sync" class="booster locked" data-type="rhythm-sync" type="button">Rhythm Sync</button>
     </div>
 
     <div class="inventory">

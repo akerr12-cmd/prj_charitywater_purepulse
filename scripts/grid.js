@@ -1,18 +1,15 @@
 import { increasePurity } from "./game.js";
 
 /* ---------------------------------------------------------
-   PURE PULSE — GRID SYSTEM
+   PURE PULSE - GRID SYSTEM
    Handles:
    - 6x6 grid rendering
-   - Tile types (source, filter, pipe, village)
-   - Water position + movement
+   - Path simulation from source to village
+   - Runtime consumable effects from level-start placements
 --------------------------------------------------------- */
 
 const gridContainer = document.getElementById("grid-container");
 
-// ---------------------------------------------------------
-// TILE TYPES
-// ---------------------------------------------------------
 const TILE = {
   EMPTY: 0,
   SOURCE: 1,
@@ -21,14 +18,10 @@ const TILE = {
   VILLAGE: 4
 };
 
-// ---------------------------------------------------------
-// LEVEL 1 LAYOUT (Machinga, Malawi)
-// Simple path: Source → BioSand → Village
-// ---------------------------------------------------------
 export const levelOne = {
   grid: [
     [0, 0, 0, 0, 0, 0],
-    [1, 3, 3, 2, 3, 4],  // ← main path
+    [1, 3, 3, 2, 3, 4],
     [0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0],
@@ -38,31 +31,177 @@ export const levelOne = {
   endPos: { row: 1, col: 5 }
 };
 
-// Active level reference
 let currentLevel = levelOne;
-
-// Water position
 let waterPos = { ...currentLevel.startPos };
 
-// ---------------------------------------------------------
-// RENDER GRID TO DOM
-// ---------------------------------------------------------
-export function renderGrid() {
-  gridContainer.innerHTML = ""; // clear previous
+// Key: "row,col" -> value: "biosand" | "charcoal" | "sensor"
+let placedConsumables = new Map();
 
-  for (let row = 0; row < 6; row++) {
-    for (let col = 0; col < 6; col++) {
+// Tracks one-time effect trigger per run.
+let consumedTiles = new Set();
+
+function posKey(row, col) {
+  return `${row},${col}`;
+}
+
+function inBounds(row, col) {
+  return row >= 0 && row < 6 && col >= 0 && col < 6;
+}
+
+function getPlacedConsumable(row, col) {
+  return placedConsumables.get(posKey(row, col)) || null;
+}
+
+function isPassable(row, col) {
+  const baseType = currentLevel.grid[row][col];
+  if (baseType !== TILE.EMPTY) return true;
+
+  // Empty tiles become traversable if a consumable is placed pre-flow.
+  const placed = getPlacedConsumable(row, col);
+  return placed === "biosand" || placed === "charcoal" || placed === "sensor";
+}
+
+function getPathToVillage() {
+  const start = { ...waterPos };
+  const end = currentLevel.endPos;
+
+  const queue = [start];
+  const visited = new Set([posKey(start.row, start.col)]);
+  const parent = new Map();
+
+  const directions = [
+    { dr: 0, dc: 1 },
+    { dr: 1, dc: 0 },
+    { dr: 0, dc: -1 },
+    { dr: -1, dc: 0 }
+  ];
+
+  while (queue.length > 0) {
+    const current = queue.shift();
+
+    if (current.row === end.row && current.col === end.col) {
+      const path = [];
+      let cursorKey = posKey(current.row, current.col);
+      let cursor = { row: current.row, col: current.col };
+      path.push(cursor);
+
+      while (parent.has(cursorKey)) {
+        const prev = parent.get(cursorKey);
+        cursor = { row: prev.row, col: prev.col };
+        cursorKey = posKey(cursor.row, cursor.col);
+        path.push(cursor);
+      }
+
+      path.reverse();
+      return path;
+    }
+
+    for (const d of directions) {
+      const nr = current.row + d.dr;
+      const nc = current.col + d.dc;
+      const key = posKey(nr, nc);
+
+      if (!inBounds(nr, nc)) continue;
+      if (visited.has(key)) continue;
+      if (!isPassable(nr, nc)) continue;
+
+      visited.add(key);
+      parent.set(key, { row: current.row, col: current.col });
+      queue.push({ row: nr, col: nc });
+    }
+  }
+
+  return null;
+}
+
+function applyConsumableEffect(row, col) {
+  const key = posKey(row, col);
+  if (consumedTiles.has(key)) return;
+
+  const placed = getPlacedConsumable(row, col);
+
+  if (placed === "biosand") {
+    increasePurity(10);
+    consumedTiles.add(key);
+    return;
+  }
+
+  if (placed === "charcoal") {
+    increasePurity(5);
+    consumedTiles.add(key);
+    return;
+  }
+
+  if (placed === "sensor") {
+    // Lightweight bonus hook to represent objective sensing.
+    increasePurity(2);
+    consumedTiles.add(key);
+    return;
+  }
+
+  const baseType = currentLevel.grid[row][col];
+  if (baseType === TILE.BIOSAND) {
+    increasePurity(10);
+    consumedTiles.add(key);
+  }
+}
+
+function addBaseTileClass(tile, type) {
+  if (type === TILE.SOURCE) tile.classList.add("source");
+  if (type === TILE.BIOSAND) tile.classList.add("biosand");
+  if (type === TILE.PIPE) tile.classList.add("pipe");
+  if (type === TILE.VILLAGE) tile.classList.add("village");
+}
+
+function addPlacedConsumableClass(tile, row, col) {
+  const placed = getPlacedConsumable(row, col);
+  if (!placed) return;
+
+  tile.classList.add("pipe");
+  tile.dataset.consumable = placed;
+
+  if (placed === "biosand") tile.classList.add("biosand");
+  if (placed === "charcoal") tile.classList.add("charcoal");
+  if (placed === "sensor") tile.classList.add("sensor");
+}
+
+export function setPlacedConsumables(placements) {
+  placedConsumables = new Map();
+
+  if (!Array.isArray(placements)) return;
+
+  placements.forEach((item) => {
+    if (!item) return;
+
+    const row = Number(item.row);
+    const col = Number(item.col);
+    const type = item.type;
+
+    if (!inBounds(row, col)) return;
+    if (!["biosand", "charcoal", "sensor"].includes(type)) return;
+
+    // Respect placement rules at runtime too.
+    const baseType = currentLevel.grid[row][col];
+    if (baseType === TILE.SOURCE || baseType === TILE.VILLAGE) return;
+
+    placedConsumables.set(posKey(row, col), type);
+  });
+}
+
+export function renderGrid() {
+  if (!gridContainer) return;
+
+  gridContainer.innerHTML = "";
+
+  for (let row = 0; row < 6; row += 1) {
+    for (let col = 0; col < 6; col += 1) {
       const tile = document.createElement("div");
       tile.classList.add("tile");
 
       const type = currentLevel.grid[row][col];
+      addBaseTileClass(tile, type);
+      addPlacedConsumableClass(tile, row, col);
 
-      if (type === TILE.SOURCE) tile.classList.add("source");
-      if (type === TILE.BIOSAND) tile.classList.add("biosand");
-      if (type === TILE.PIPE) tile.classList.add("pipe");
-      if (type === TILE.VILLAGE) tile.classList.add("village");
-
-      // Highlight water position
       if (row === waterPos.row && col === waterPos.col) {
         tile.classList.add("water");
       }
@@ -72,27 +211,27 @@ export function renderGrid() {
   }
 }
 
-// ---------------------------------------------------------
-// MOVE WATER FORWARD (called from audio.js on beat success)
-// ---------------------------------------------------------
 export function moveWaterForward() {
-  const { row, col } = waterPos;
+  const atEnd =
+    waterPos.row === currentLevel.endPos.row &&
+    waterPos.col === currentLevel.endPos.col;
 
-  // If already at the end, stop movement
-  if (col === currentLevel.endPos.col && row === currentLevel.endPos.row) {
-    console.log("Reached village!");
+  if (atEnd) return;
+
+  const path = getPathToVillage();
+  if (!path || path.length < 2) {
+    // No traversable route from current position.
     return;
   }
 
-  // Store previous position for trail animation
+  const prevRow = waterPos.row;
   const prevCol = waterPos.col;
 
-  // Move water one tile to the right (Level 1 path)
-  waterPos.col += 1;
+  const next = path[1];
+  waterPos = { row: next.row, col: next.col };
 
-  // Apply trail animation to the previous tile
   const tiles = document.querySelectorAll("#grid-container .tile");
-  const prevTileIndex = row * 6 + prevCol;
+  const prevTileIndex = prevRow * 6 + prevCol;
   const prevTile = tiles[prevTileIndex];
 
   if (prevTile) {
@@ -100,20 +239,12 @@ export function moveWaterForward() {
     setTimeout(() => prevTile.classList.remove("water-trail"), 400);
   }
 
-  // Hook for purity logic (keep this!)
-  const tileType = currentLevel.grid[waterPos.row][waterPos.col];
-  if (tileType === TILE.BIOSAND) {
-     increasePurity(10);
-  }
-
-  // Re-render grid with updated water position
+  applyConsumableEffect(waterPos.row, waterPos.col);
   renderGrid();
 }
 
-// ---------------------------------------------------------
-// RESET WATER POSITION (for replay)
-// ---------------------------------------------------------
 export function resetWater() {
   waterPos = { ...currentLevel.startPos };
+  consumedTiles = new Set();
   renderGrid();
 }
