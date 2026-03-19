@@ -306,10 +306,10 @@
 }
 
 #level-mastered-badge {
-  position: absolute;
-  top: 2rem;
-  left: 50%;
-  transform: translateX(-50%) scale(0.6);
+  position: relative;
+  display: inline-block;
+  margin-bottom: 0.8rem;
+  transform: scale(0.6);
   background: rgba(255, 201, 7, 0.95);
   color: #1a1a1a;
   padding: 0.6rem 1.4rem;
@@ -325,15 +325,15 @@
 @keyframes badgePop {
   0% {
     opacity: 0;
-    transform: translateX(-50%) scale(0.6);
+    transform: scale(0.6);
   }
   60% {
     opacity: 1;
-    transform: translateX(-50%) scale(1.1);
+    transform: scale(1.1);
   }
   100% {
     opacity: 1;
-    transform: translateX(-50%) scale(1);
+    transform: scale(1);
   }
 }
 

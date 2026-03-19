@@ -85,7 +85,7 @@ const pauseBtn = document.getElementById("pause-btn");
 const resetBtn = document.getElementById("reset-btn");
 const backToMenuBtn = document.getElementById("back-to-menu-btn");
 const backToMenuBtnImpact = document.getElementById("back-to-menu-btn-impact");
-const replayTutorialBtn = document.getElementById("replay-tutorial-btn");
+const impactLevelSelectBtn = document.getElementById("impact-level-select-btn");
 
 /* GAME STATE */
 let selectedLevelId = "malawi-easy";
@@ -555,15 +555,15 @@ if (boosterRhythmSync) boosterRhythmSync.addEventListener("click", useRhythmSync
 
 if (backToMenuBtn) backToMenuBtn.addEventListener("click", returnToMainMenu);
 if (backToMenuBtnImpact) backToMenuBtnImpact.addEventListener("click", returnToMainMenu);
-
-if (howToPlayBtn) {
-  howToPlayBtn.addEventListener("click", () => {
-    startTutorial();
+if (impactLevelSelectBtn) {
+  impactLevelSelectBtn.addEventListener("click", () => {
+    showScreen(levelSelectScreen);
+    setRhythmControlsEnabled(false);
   });
 }
 
-if (replayTutorialBtn) {
-  replayTutorialBtn.addEventListener("click", () => {
+if (howToPlayBtn) {
+  howToPlayBtn.addEventListener("click", () => {
     startTutorial();
   });
 }

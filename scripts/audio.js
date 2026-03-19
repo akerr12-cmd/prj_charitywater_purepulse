@@ -27,12 +27,12 @@ const strongBeatHistory = [];
 const tolerance = 0.08; // 80ms timing window
 
 const LEVEL_TRACKS = {
-  "malawi-easy": "assets/audio/lvl-1-drum-afrobeat.mp3",
-  "kenya-medium": "assets/audio/med_lvl_80bpm.wav",
-  "ethiopia-hard": "assets/audio/hard_lvl_119bpm.wav"
+  "malawi-easy": "assets/audio/easy_lvl_120bpm.mp3",
+  "kenya-medium": "assets/audio/med_lvl_80bpm.mp3",
+  "ethiopia-hard": "assets/audio/hard_lvl_119bpm.mp3"
 };
 
-const DEFAULT_TRACK = "assets/audio/lvl-1-drum-afrobeat.mp3";
+const DEFAULT_TRACK = "assets/audio/easy_lvl_120bpm.mp3";
 let currentTrackSrc = DEFAULT_TRACK;
 
 // DOM elements
