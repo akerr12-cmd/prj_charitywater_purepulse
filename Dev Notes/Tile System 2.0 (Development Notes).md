@@ -1,6 +1,10 @@
 # 🌊 Pure Pulse — Tile System 2.0  
 
-### Player‑Placed Consumables • Boosters • Updated Level Flow
+---
+
+## Player‑Placed Consumables • Boosters • Updated Level Flow
+
+---
 
 ### Development Notes (Premium Internal Design Doc)
 
