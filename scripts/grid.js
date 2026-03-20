@@ -22,14 +22,14 @@ const LEVELS = {
   "malawi-easy": {
     grid: [
       [0, 0, 0, 0, 0, 0],
-      [1, 3, 3, 2, 3, 4],
-      [0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0]
+      [1, 3, 3, 3, 3, 0],
+      [0, 0, 0, 0, 2, 3],
+      [0, 0, 0, 0, 0, 3],
+      [0, 0, 0, 0, 3, 3],
+      [0, 0, 0, 0, 3, 4]
     ],
     startPos: { row: 1, col: 0 },
-    endPos: { row: 1, col: 5 }
+    endPos: { row: 5, col: 5 }
   },
   "kenya-medium": {
     // Medium path snakes through multiple rows.
@@ -66,14 +66,11 @@ let currentLevel = LEVELS[currentLevelId];
 let waterPos = { ...currentLevel.startPos };
 let filledTiles = new Set([posKey(currentLevel.startPos.row, currentLevel.startPos.col)]);
 
-
-// reval function for impact screen - reveals grid with fade-in effect
-function revealImageTile(row, col) {
-  const index = row * 6 + col;
-  const tiles = document.querySelectorAll("#grid-container .tile");
-  const tile = tiles[index];
-  if (tile) tile.classList.add("revealed");
-}
+const CONSUMABLE_IMAGE_BY_TYPE = {
+  biosand: "BioSand.png",
+  charcoal: "Charcoal.png",
+  sensor: "Sensor.png"
+};
 
 // Key: "row,col" -> value: "biosand" | "charcoal" | "sensor"
 let placedConsumables = new Map();
@@ -91,6 +88,15 @@ function inBounds(row, col) {
 
 function getPlacedConsumable(row, col) {
   return placedConsumables.get(posKey(row, col)) || null;
+}
+
+function updateRevealOpacity() {
+  const totalTiles = 36;
+  const img = document.getElementById("impact-reveal-image");
+  if (!img) return;
+
+  // Use accumulated filled flow tiles as reveal progress.
+  img.style.opacity = Math.min(1, filledTiles.size / totalTiles);
 }
 
 function isPassable(row, col) {
@@ -203,6 +209,15 @@ function addPlacedConsumableClass(tile, row, col) {
   if (placed === "biosand") tile.classList.add("biosand");
   if (placed === "charcoal") tile.classList.add("charcoal");
   if (placed === "sensor") tile.classList.add("sensor");
+
+  const iconName = CONSUMABLE_IMAGE_BY_TYPE[placed];
+  if (iconName) {
+    const icon = document.createElement("img");
+    icon.src = `assets/images/${iconName}`;
+    icon.alt = `${placed} consumable`;
+    icon.className = "game-placed-consumable";
+    tile.appendChild(icon);
+  }
 }
 
 function tileTypeToPlacement(type) {
@@ -277,6 +292,7 @@ export function renderGrid() {
 
       if (filledTiles.has(posKey(row, col))) {
         tile.classList.add("water-filled");
+        tile.classList.add("revealed");
       }
 
       if (row === waterPos.row && col === waterPos.col) {
@@ -286,6 +302,8 @@ export function renderGrid() {
       gridContainer.appendChild(tile);
     }
   }
+
+  updateRevealOpacity();
 }
 
 export function moveWaterForward() {
@@ -312,21 +330,8 @@ export function moveWaterForward() {
     setTimeout(() => prevTile.classList.remove("water-trail"), 400);
   }
 
-applyConsumableEffect(waterPos.row, waterPos.col);
-
-// Reveal the tile beneath the water
-revealImageTile(waterPos.row, waterPos.col);
-
-// PART 5 — Gradually fade in the background image
-const revealedCount = document.querySelectorAll(".tile.revealed").length;
-const totalTiles = 36;
-const img = document.getElementById("impact-reveal-image");
-
-if (img) {
-  img.style.opacity = Math.min(1, revealedCount / totalTiles);
-}
-
-renderGrid();
+  applyConsumableEffect(waterPos.row, waterPos.col);
+  renderGrid();
 
 
 }

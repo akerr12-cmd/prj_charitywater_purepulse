@@ -784,15 +784,29 @@ button {
   transition: opacity 0.4s ease;
 }
 
-.tile {
+.grid-reveal-wrapper #grid-container {
   position: relative;
   z-index: 2;
-  background: #ffffff;
-  transition: background 0.4s ease, opacity 0.4s ease;
+}
+
+.grid-reveal-wrapper #grid-container .tile {
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s ease;
 }
 
 .tile.revealed {
-  background: transparent;
-  opacity: 0.2; /* lets the image show through */
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.game-placed-consumable {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  width: 72%;
+  height: 72%;
+  object-fit: contain;
+  z-index: 3;
+  pointer-events: none;
 }
 

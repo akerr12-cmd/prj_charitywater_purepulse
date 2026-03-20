@@ -220,6 +220,7 @@ function updateLevelMetaInUi() {
 function prepareLevelStart() {
   setActiveLevel(selectedLevelId);
   setLevelTrack(selectedLevelId);
+  setImpactImageForLevel();
   updateLevelMetaInUi();
   renderLevelStartGrids();
   refreshConsumableInventory();
@@ -257,11 +258,13 @@ function setImpactImageForLevel() {
   if (!img) return;
 
   if (selectedLevelId === "malawi-easy") {
-    img.src = "assets/images/malawi-impact.jpg";
+    img.src = "assets/images/Malawi.png";
   } else if (selectedLevelId === "kenya-medium") {
-    img.src = "assets/images/kenya-impact.jpg";
+    img.src = "assets/images/clean_water_well.jpeg";
   } else if (selectedLevelId === "ethiopia-hard") {
-    img.src = "assets/images/ethiopia-impact.jpg";
+    img.src = "assets/images/clean_water_pouring.jpeg";
+  } else {
+    img.src = "assets/images/Malawi.png";
   }
 }
 
