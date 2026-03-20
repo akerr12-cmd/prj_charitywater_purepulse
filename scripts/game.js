@@ -252,6 +252,20 @@ function unlockGameBoosters() {
   });
 }
 
+function setImpactImageForLevel() {
+  const img = document.getElementById("impact-reveal-image");
+  if (!img) return;
+
+  if (selectedLevelId === "malawi-easy") {
+    img.src = "assets/images/malawi-impact.jpg";
+  } else if (selectedLevelId === "kenya-medium") {
+    img.src = "assets/images/kenya-impact.jpg";
+  } else if (selectedLevelId === "ethiopia-hard") {
+    img.src = "assets/images/ethiopia-impact.jpg";
+  }
+}
+
+
 /* START GAME */
 export function startGame() {
   setActiveLevel(selectedLevelId);
@@ -271,6 +285,8 @@ export function startGame() {
 
   const placementSnapshot = getPlacementSnapshot();
   setPlacedConsumables(placementSnapshot);
+
+  setImpactImageForLevel();
 
   resetWater();
   renderGrid();

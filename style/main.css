@@ -343,6 +343,11 @@ button {
 }
 
 /* Water Tile Highlight (when the water is currently occupying a tile) */
+.water-filled {
+  background: linear-gradient(to bottom, rgba(46, 151, 209, 0.45) 0%, rgba(46, 151, 209, 0.22) 100%);
+  box-shadow: inset 0 0 8px rgba(46, 151, 209, 0.5);
+}
+
 .water {
   outline: 3px solid #ffffff;
   outline-offset: -3px;
@@ -756,3 +761,38 @@ button {
     font-size: 0.8rem;
   }
 }
+
+/* ---------------------------------------------------
+   IMAGE REVEAL SYSTEM — Beneath Water Flow Grid
+--------------------------------------------------- */
+
+.grid-reveal-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.impact-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0; /* fully hidden at start */
+  transition: opacity 0.4s ease;
+}
+
+.tile {
+  position: relative;
+  z-index: 2;
+  background: #ffffff;
+  transition: background 0.4s ease, opacity 0.4s ease;
+}
+
+.tile.revealed {
+  background: transparent;
+  opacity: 0.2; /* lets the image show through */
+}
+

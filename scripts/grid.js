@@ -64,6 +64,16 @@ export const levelOne = LEVELS["malawi-easy"];
 let currentLevelId = "malawi-easy";
 let currentLevel = LEVELS[currentLevelId];
 let waterPos = { ...currentLevel.startPos };
+let filledTiles = new Set([posKey(currentLevel.startPos.row, currentLevel.startPos.col)]);
+
+
+// reval function for impact screen - reveals grid with fade-in effect
+function revealImageTile(row, col) {
+  const index = row * 6 + col;
+  const tiles = document.querySelectorAll("#grid-container .tile");
+  const tile = tiles[index];
+  if (tile) tile.classList.add("revealed");
+}
 
 // Key: "row,col" -> value: "biosand" | "charcoal" | "sensor"
 let placedConsumables = new Map();
@@ -212,6 +222,7 @@ export function setActiveLevel(levelId) {
   currentLevel = LEVELS[currentLevelId];
   waterPos = { ...currentLevel.startPos };
   consumedTiles = new Set();
+  filledTiles = new Set([posKey(waterPos.row, waterPos.col)]);
 }
 
 export function getPlacementLayout() {
@@ -264,6 +275,10 @@ export function renderGrid() {
       addBaseTileClass(tile, type);
       addPlacedConsumableClass(tile, row, col);
 
+      if (filledTiles.has(posKey(row, col))) {
+        tile.classList.add("water-filled");
+      }
+
       if (row === waterPos.row && col === waterPos.col) {
         tile.classList.add("water");
       }
@@ -286,6 +301,7 @@ export function moveWaterForward() {
 
   const next = path[1];
   waterPos = { row: next.row, col: next.col };
+  filledTiles.add(posKey(waterPos.row, waterPos.col));
 
   const tiles = document.querySelectorAll("#grid-container .tile");
   const prevTileIndex = prevRow * 6 + prevCol;
@@ -296,12 +312,28 @@ export function moveWaterForward() {
     setTimeout(() => prevTile.classList.remove("water-trail"), 400);
   }
 
-  applyConsumableEffect(waterPos.row, waterPos.col);
-  renderGrid();
+applyConsumableEffect(waterPos.row, waterPos.col);
+
+// Reveal the tile beneath the water
+revealImageTile(waterPos.row, waterPos.col);
+
+// PART 5 — Gradually fade in the background image
+const revealedCount = document.querySelectorAll(".tile.revealed").length;
+const totalTiles = 36;
+const img = document.getElementById("impact-reveal-image");
+
+if (img) {
+  img.style.opacity = Math.min(1, revealedCount / totalTiles);
+}
+
+renderGrid();
+
+
 }
 
 export function resetWater() {
   waterPos = { ...currentLevel.startPos };
   consumedTiles = new Set();
+  filledTiles = new Set([posKey(waterPos.row, waterPos.col)]);
   renderGrid();
 }
